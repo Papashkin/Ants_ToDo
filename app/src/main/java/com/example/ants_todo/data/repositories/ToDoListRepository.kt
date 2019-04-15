@@ -9,6 +9,8 @@ class ToDoListRepository(private val dao: ToDoListDao) {
 
     fun getListByName(name: String) = dao.getByName(name)
 
+    fun getListById(id: Int) = dao.getById(id)
+
     fun insert(list: ToDoList) = dao.add(list)
 
     fun delete(list: ToDoList) = dao.delete(list)

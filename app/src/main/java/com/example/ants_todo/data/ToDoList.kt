@@ -5,26 +5,11 @@ import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "todoLists")
-class ToDoList {
+data class ToDoList (
 
-    @PrimaryKey(autoGenerate = true)
-    private var id: Int = 0
-
-    private var name: String = ""
-
-
-    fun getName(): String = this.name
-
-    fun getId(): Int = this.id
-
-    fun setName(name: String) {
-        this.name = name
-    }
-
-    fun setId(id: Int) {
-        this.id = id
-    }
-
-}
+    @PrimaryKey
+    var id: Int = 0,
+    var name: String
+    )
 
 

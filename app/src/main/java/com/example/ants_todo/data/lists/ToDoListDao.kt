@@ -13,6 +13,9 @@ interface ToDoListDao {
     @Query("Select * from todoLists where name = :name")
     fun getByName(name: String): ToDoList
 
+    @Query("Select * from todoLists where id = :id")
+    fun getById(id: Int): ToDoList
+
     @Insert
     fun add(list: ToDoList)
 

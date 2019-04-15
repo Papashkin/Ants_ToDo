@@ -16,7 +16,8 @@ val appModule = Kodein.Module("app") {
             instance(),
             ToDoListDatabase::class.java,
             "todo_lists"
-        ).build()
+        ).allowMainThreadQueries()
+            .build()
     }
 
     bind<ToDoListDao>() with singleton { instance<ToDoListDatabase>().todoDao() }
