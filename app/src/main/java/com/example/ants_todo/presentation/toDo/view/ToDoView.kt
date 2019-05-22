@@ -1,11 +1,11 @@
-package com.example.ants_todo.presentation.view
+package com.example.ants_todo.presentation.toDo.view
 
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 
-class ToDoActivity : AppCompatActivity() {
+class ToDoView : Fragment() {
 
 //    private lateinit var localBinding:
-//    private lateinit var viewModel: ToDoListViewModel
+//    private lateinit var viewModel: ToDoViewModel
 
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
@@ -13,7 +13,7 @@ class ToDoActivity : AppCompatActivity() {
 //        viewModel = ViewModelProviders.of(
 //            this,
 //            (thi application as ToDoApplication).viewModelFactory
-//        ).get(ToDoListViewModel::class.java)
+//        ).get(ToDoViewModel::class.java)
 //    }
 //
 //    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =

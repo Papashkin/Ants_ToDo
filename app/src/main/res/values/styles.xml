@@ -12,10 +12,13 @@
         <item name="android:textColor">@color/color_black</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textAlignment">viewStart</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:background">@color/color_white</item>
     </style>
 
     <style name="ToDoListToolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/color_black</item>
+        <item name="android:elevation">6dp</item>
     </style>
 
 </resources>

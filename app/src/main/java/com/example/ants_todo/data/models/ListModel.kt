@@ -1,11 +1,11 @@
-package com.example.ants_todo.data
+package com.example.ants_todo.data.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-@Entity(tableName = "todoLists")
-data class ToDoList (
+@Entity(tableName = "lists")
+data class ListModel (
 
     @PrimaryKey
     var id: Int = 0,

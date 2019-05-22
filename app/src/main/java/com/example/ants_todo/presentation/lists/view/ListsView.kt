@@ -1,5 +1,6 @@
-package com.example.ants_todo.presentation.view
+package com.example.ants_todo.presentation.lists.view
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +12,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.ants_todo.R
-import com.example.ants_todo.data.ToDoList
-import com.example.ants_todo.presentation.viewModel.ListsViewModel
-import com.example.ants_todo.util.adapter.ItemSwipeCallback
-import com.example.ants_todo.util.adapter.ListsAdapter
+import com.example.ants_todo.data.models.ListModel
+import com.example.ants_todo.presentation.lists.viewModel.ListsViewModel
+import com.example.ants_todo.presentation.lists.adapter.ItemSwipeCallback
+import com.example.ants_todo.presentation.lists.adapter.ListsAdapter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.lists_fragment.*
 import kotlin.random.Random
 
@@ -36,16 +38,19 @@ class ListsView : Fragment() {
         setAdapter()
         setListeners()
 
-        viewModel.lists.observeForever {
+        viewModel.listModel.observeForever {
             listsAdapter.submitList(it)
         }
     }
 
     private fun setAdapter() {
         listsAdapter = ListsAdapter(
-            onItemClick = { },
-            onItemDelete = { id ->
+            onItemClick = {
+                Toast.makeText(requireContext(), "list № $it clicked", Toast.LENGTH_SHORT).show()
+            },
+            onItemDelete = { id, name ->
                 viewModel.deleteItem(id)
+                showSnackBar(name)
             }
         )
         val swipeHelper = ItemSwipeCallback(listsAdapter)
@@ -85,15 +90,25 @@ class ListsView : Fragment() {
 
     private fun addItem(name: String) {
         viewModel.addItem(
-            ToDoList(
+            ListModel(
                 id = Random.nextInt(),
                 name = name
             )
         )
     }
 
+    private fun showSnackBar(listName: String) {
+        Snackbar
+            .make(toDoListsLayout, "ListModel \"$listName\" was deleted", Snackbar.LENGTH_LONG)
+            .setActionTextColor(Color.YELLOW)
+            .setAction("UNDO") {
+                viewModel.undoDelete()
+            }
+            .show()
+    }
+
     override fun onPause() {
         super.onPause()
-        viewModel.lists.removeObserver { }
+        viewModel.listModel.removeObserver { }
     }
 }

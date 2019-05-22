@@ -1,7 +1,7 @@
 package com.example.ants_todo.util.navigation
 
 import androidx.fragment.app.Fragment
-import com.example.ants_todo.presentation.view.ListsView
+import com.example.ants_todo.presentation.lists.view.ListsView
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 class Screens {
