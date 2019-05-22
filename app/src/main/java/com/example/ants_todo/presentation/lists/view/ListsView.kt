@@ -13,14 +13,23 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.ants_todo.R
 import com.example.ants_todo.data.models.ListModel
-import com.example.ants_todo.presentation.lists.viewModel.ListsViewModel
 import com.example.ants_todo.presentation.lists.adapter.ItemSwipeCallback
 import com.example.ants_todo.presentation.lists.adapter.ListsAdapter
+import com.example.ants_todo.presentation.lists.viewModel.ListsViewModel
+import com.example.ants_todo.util.navigation.Screens
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.lists_fragment.*
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.kodein
+import org.kodein.di.erased.instance
+import ru.terrakok.cicerone.Router
 import kotlin.random.Random
 
-class ListsView : Fragment() {
+class ListsView : Fragment(), KodeinAware {
+    override val kodein: Kodein by kodein()
+
+    private val router: Router by instance()
 
     private lateinit var viewModel: ListsViewModel
     private lateinit var listsAdapter: ListsAdapter
@@ -46,7 +55,7 @@ class ListsView : Fragment() {
     private fun setAdapter() {
         listsAdapter = ListsAdapter(
             onItemClick = {
-                Toast.makeText(requireContext(), "list № $it clicked", Toast.LENGTH_SHORT).show()
+                router.navigateTo(Screens.ToDosScreen(it))
             },
             onItemDelete = { id, name ->
                 viewModel.deleteItem(id)
@@ -99,7 +108,7 @@ class ListsView : Fragment() {
 
     private fun showSnackBar(listName: String) {
         Snackbar
-            .make(toDoListsLayout, "ListModel \"$listName\" was deleted", Snackbar.LENGTH_LONG)
+            .make(listsLayout, "List \"$listName\" was deleted", Snackbar.LENGTH_LONG)
             .setActionTextColor(Color.YELLOW)
             .setAction("UNDO") {
                 viewModel.undoDelete()

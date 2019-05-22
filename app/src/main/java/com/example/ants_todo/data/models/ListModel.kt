@@ -5,11 +5,9 @@ import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "lists")
-data class ListModel (
-
-    @PrimaryKey
-    var id: Int = 0,
+data class ListModel(
+    @PrimaryKey var id: Int = 0,
     var name: String
-    )
+)
 
 

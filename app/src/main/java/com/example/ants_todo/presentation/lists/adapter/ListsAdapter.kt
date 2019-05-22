@@ -10,7 +10,7 @@ import com.example.ants_todo.R
 import com.example.ants_todo.data.models.ListModel
 
 class ListsAdapter(
-    private val onItemClick: (id: Int) -> Unit,
+    private val onItemClick: (list: ListModel) -> Unit,
     private val onItemDelete: (id: Int, name: String) -> Unit
 ) : ListAdapter<ListModel, ListsAdapter.TodoViewHolder>(TodoItemCallback()) {
 
@@ -36,7 +36,7 @@ class ListsAdapter(
             textVew.text = item.name
 
             textVew.setOnClickListener {
-                onItemClick.invoke(item.id)
+                onItemClick.invoke(item)
             }
         }
     }

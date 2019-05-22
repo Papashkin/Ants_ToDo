@@ -6,9 +6,14 @@ import androidx.lifecycle.LiveData
 import com.example.ants_todo.ToDoApplication
 import com.example.ants_todo.data.models.ListModel
 import com.example.ants_todo.data.db.lists.ListsDao
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
+import org.kodein.di.erased.on
 
 class ListsViewModel(app: Application) : AndroidViewModel(app) {
+
 
     private val dao: ListsDao by (app as ToDoApplication).kodein.instance()
     private var preDeletedList: ListModel? = null

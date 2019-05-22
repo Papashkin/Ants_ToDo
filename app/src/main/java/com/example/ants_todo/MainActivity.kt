@@ -1,27 +1,24 @@
-package com.example.ants_todo.presentation.view
+package com.example.ants_todo
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.ants_todo.R
-import com.example.ants_todo.ToDoApplication
 import com.example.ants_todo.util.navigation.Screens
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
+import org.kodein.di.android.kodein
 import org.kodein.di.erased.instance
+import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 
 class MainActivity : AppCompatActivity(), KodeinAware {
+    override val kodein: Kodein by kodein()
 
-    override val kodein: Kodein by lazy {
-        (application as ToDoApplication).kodein
-    }
-    private val navHolder: NavigatorHolder by instance()
+    private val cicerone: Cicerone<Router> by instance()
+    private val navHolder: NavigatorHolder by lazy { cicerone.navigatorHolder }
     private val router: Router by instance()
-    private val navigator by lazy {
-        SupportAppNavigator(this, R.id.fragmentLayout)
-    }
+    private val navigator by lazy { SupportAppNavigator(this, R.id.fragmentLayout) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
