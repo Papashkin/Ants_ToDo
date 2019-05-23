@@ -19,16 +19,8 @@ import com.example.ants_todo.presentation.toDo.adapter.ToDoAdapter
 import com.example.ants_todo.presentation.toDo.adapter.ToDoSwipeCallback
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.todo_fragment.*
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
 
-class ToDoView : Fragment(), KodeinAware {
-    override val kodein: Kodein by kodein()
-
-    private lateinit var viewModel: ToDoViewModel
-    private lateinit var toDoModelFactory: ToDoModelFactory
-
+class ToDoView : Fragment() {
     fun newInstance(list: ListModel): ToDoView {
         val fragment = ToDoView()
         val args = Bundle()
@@ -37,6 +29,9 @@ class ToDoView : Fragment(), KodeinAware {
         fragment.arguments = args
         return fragment
     }
+
+    private lateinit var viewModel: ToDoViewModel
+    private lateinit var toDoModelFactory: ToDoModelFactory
 
     private var listId: Int = -1
     private var listName: String = ""
@@ -56,7 +51,7 @@ class ToDoView : Fragment(), KodeinAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-        toDoModelFactory = ToDoModelFactory(listId, kodein)
+        toDoModelFactory = ToDoModelFactory(listId)
         viewModel = ViewModelProviders.of(this, toDoModelFactory).get(ToDoViewModel::class.java)
     }
 

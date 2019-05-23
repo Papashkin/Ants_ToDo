@@ -12,7 +12,7 @@ import com.example.ants_todo.data.models.ListModel
 class ListsAdapter(
     private val onItemClick: (list: ListModel) -> Unit,
     private val onItemDelete: (id: Int, name: String) -> Unit
-) : ListAdapter<ListModel, ListsAdapter.TodoViewHolder>(TodoItemCallback()) {
+) : ListAdapter<ListModel, ListsAdapter.TodoViewHolder>(ListsItemCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, pos: Int): TodoViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.lists_view, parent, false)

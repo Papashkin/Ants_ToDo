@@ -9,35 +9,41 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.ants_todo.R
 import com.example.ants_todo.data.models.ListModel
-import com.example.ants_todo.presentation.lists.adapter.ListsSwipeCallback
+import com.example.ants_todo.presentation.ToDoApplication
 import com.example.ants_todo.presentation.lists.adapter.ListsAdapter
+import com.example.ants_todo.presentation.lists.adapter.ListsSwipeCallback
 import com.example.ants_todo.util.navigation.Screens
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.lists_fragment.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
 import org.kodein.di.erased.instance
 import ru.terrakok.cicerone.Router
 
 class ListsView : Fragment(), KodeinAware {
-    override val kodein: Kodein by kodein()
-
-    private val router: Router by instance()
 
     private lateinit var viewModel: ListsViewModel
-    private lateinit var listsModelFactory: ListsModelFactory
-    private lateinit var listsAdapter: ListsAdapter
+
+    override val kodein: Kodein = ToDoApplication.getKodein()
+    private val router: Router by instance()
+    private var listsAdapter: ListsAdapter = ListsAdapter(
+        onItemClick = {
+            router.navigateTo(Screens.ToDosScreen(it))
+        },
+        onItemDelete = { id, name ->
+            viewModel.deleteItem(id)
+            showSnackBar(name)
+        }
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        listsModelFactory = ListsModelFactory(kodein)
-        viewModel = ViewModelProviders.of(this, listsModelFactory).get(ListsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ListsViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -48,21 +54,12 @@ class ListsView : Fragment(), KodeinAware {
         setAdapter()
         setListeners()
 
-        viewModel.listModel.observeForever {
+        viewModel.listModel.observe(this, Observer {
             listsAdapter.submitList(it)
-        }
+        })
     }
 
     private fun setAdapter() {
-        listsAdapter = ListsAdapter(
-            onItemClick = {
-                router.navigateTo(Screens.ToDosScreen(it))
-            },
-            onItemDelete = { id, name ->
-                viewModel.deleteItem(id)
-                showSnackBar(name)
-            }
-        )
         val swipeHelper = ListsSwipeCallback(listsAdapter)
         val touchHelper = ItemTouchHelper(swipeHelper)
         touchHelper.attachToRecyclerView(listsRecycler)
@@ -100,9 +97,7 @@ class ListsView : Fragment(), KodeinAware {
 
     private fun addItem(name: String) {
         viewModel.addItem(
-            ListModel(
-                name = name
-            )
+            ListModel(name = name)
         )
     }
 
@@ -114,10 +109,5 @@ class ListsView : Fragment(), KodeinAware {
                 viewModel.undoDeleting()
             }
             .show()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.listModel.removeObserver { }
     }
 }

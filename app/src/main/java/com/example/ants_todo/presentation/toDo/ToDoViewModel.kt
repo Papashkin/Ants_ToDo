@@ -1,19 +1,21 @@
 package com.example.ants_todo.presentation.toDo
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import com.example.ants_todo.data.models.ToDoModel
 import com.example.ants_todo.data.repositories.ToDoRepository
+import com.example.ants_todo.presentation.ToDoApplication
+import com.example.ants_todo.presentation.common.fragment.BaseViewModel
 import org.kodein.di.Kodein
 import org.kodein.di.erased.instance
 
-class ToDoViewModel(listId: Int, kodein: Kodein) : ViewModel() {
+class ToDoViewModel(listId: Int) : BaseViewModel() {
 
-    private val toDoRepo: ToDoRepository by kodein.instance()
+    override val kodein: Kodein = ToDoApplication.getKodein()
+
+    private val toDoRepo: ToDoRepository by instance()
     private var preDeletedToDo: ToDoModel? = null
 
     var toDos: LiveData<List<ToDoModel>>
-
     init {
         toDos = toDoRepo.getToDos(listId)
     }

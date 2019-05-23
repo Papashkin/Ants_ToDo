@@ -4,6 +4,7 @@
           package="com.example.ants_todo">
 
     <application
+            android:name=".presentation.ToDoApplication"
             android:label="@string/app_name"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
