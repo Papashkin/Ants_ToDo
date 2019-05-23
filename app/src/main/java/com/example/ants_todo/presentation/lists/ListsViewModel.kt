@@ -25,7 +25,7 @@ class ListsViewModel(kodein: Kodein) : ViewModel()  {
         repo.delete(preDeletedList!!)
     }
 
-    fun undoDelete() {
+    fun undoDeleting() {
         preDeletedList.let {
             repo.insert(it!!)
         }

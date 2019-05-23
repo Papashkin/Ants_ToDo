@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.ants_todo.R
 import com.example.ants_todo.data.models.ListModel
-import com.example.ants_todo.presentation.lists.adapter.ItemSwipeCallback
+import com.example.ants_todo.presentation.lists.adapter.ListsSwipeCallback
 import com.example.ants_todo.presentation.lists.adapter.ListsAdapter
 import com.example.ants_todo.util.navigation.Screens
 import com.google.android.material.snackbar.Snackbar
@@ -23,7 +23,6 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.erased.instance
 import ru.terrakok.cicerone.Router
-import kotlin.random.Random
 
 class ListsView : Fragment(), KodeinAware {
     override val kodein: Kodein by kodein()
@@ -64,7 +63,7 @@ class ListsView : Fragment(), KodeinAware {
                 showSnackBar(name)
             }
         )
-        val swipeHelper = ItemSwipeCallback(listsAdapter)
+        val swipeHelper = ListsSwipeCallback(listsAdapter)
         val touchHelper = ItemTouchHelper(swipeHelper)
         touchHelper.attachToRecyclerView(listsRecycler)
         listsRecycler.adapter = listsAdapter
@@ -77,7 +76,7 @@ class ListsView : Fragment(), KodeinAware {
     }
 
     private fun showAddDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_add_new_list, null)
+        val dialogView = layoutInflater.inflate(R.layout.dialog_add_new_item, null)
         val insertedText = dialogView.findViewById<EditText>(R.id.etListName)
 
         AlertDialog.Builder(requireContext())
@@ -102,7 +101,6 @@ class ListsView : Fragment(), KodeinAware {
     private fun addItem(name: String) {
         viewModel.addItem(
             ListModel(
-                id = Random.nextInt(),
                 name = name
             )
         )
@@ -113,7 +111,7 @@ class ListsView : Fragment(), KodeinAware {
             .make(listsLayout, "List \"$listName\" was deleted", Snackbar.LENGTH_LONG)
             .setActionTextColor(Color.YELLOW)
             .setAction("UNDO") {
-                viewModel.undoDelete()
+                viewModel.undoDeleting()
             }
             .show()
     }

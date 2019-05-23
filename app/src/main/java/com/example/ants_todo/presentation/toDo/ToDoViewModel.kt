@@ -23,17 +23,17 @@ class ToDoViewModel(listId: Int, kodein: Kodein) : ViewModel() {
     }
 
     fun deleteItem(id: Int) {
-        val preDeletedToDo = toDoRepo.getById(id)
-        toDoRepo.delete(preDeletedToDo)
+        preDeletedToDo = toDoRepo.getById(id)
+        toDoRepo.delete(preDeletedToDo!!)
     }
 
     fun updateItem(id: Int) {
         val updatedItem = toDoRepo.getById(id)
-        updatedItem.isChecked != updatedItem.isChecked
+        updatedItem.isChecked = !updatedItem.isChecked
         toDoRepo.update(updatedItem)
     }
 
-    fun undoDleting() {
+    fun undoDeleting() {
         if (preDeletedToDo != null) {
             toDoRepo.insert(preDeletedToDo!!)
             preDeletedToDo = null

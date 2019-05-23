@@ -1,4 +1,4 @@
-package com.example.ants_todo.presentation.lists.adapter
+package com.example.ants_todo.presentation.toDo.adapter
 
 import android.graphics.Canvas
 import android.graphics.drawable.ColorDrawable
@@ -6,9 +6,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ants_todo.R
-import com.example.ants_todo.presentation.lists.adapter.ListsAdapter
 
-class ItemSwipeCallback(private val todoAdapter: ListsAdapter) : ItemTouchHelper.Callback() {
+
+class ToDoSwipeCallback(private val todoAdapter: ToDoAdapter) : ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(view: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
         val swipeFlags = ItemTouchHelper.LEFT

@@ -7,8 +7,5 @@ import org.kodein.di.Kodein
 class ToDoModelFactory(private val listId: Int, private val kodein: Kodein) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T = ToDoViewModel(
-        listId,
-        kodein
-    ) as T
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T = ToDoViewModel(listId, kodein) as T
 }

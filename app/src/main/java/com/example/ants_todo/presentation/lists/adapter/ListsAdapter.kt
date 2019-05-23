@@ -15,7 +15,7 @@ class ListsAdapter(
 ) : ListAdapter<ListModel, ListsAdapter.TodoViewHolder>(TodoItemCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, pos: Int): TodoViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.todo_list_view, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.lists_view, parent, false)
         return TodoViewHolder(view)
     }
 
