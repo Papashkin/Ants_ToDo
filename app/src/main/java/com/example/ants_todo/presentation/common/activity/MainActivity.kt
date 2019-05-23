@@ -1,7 +1,8 @@
-package com.example.ants_todo
+package com.example.ants_todo.presentation.common.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.ants_todo.R
 import com.example.ants_todo.util.navigation.Screens
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -23,8 +24,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        router.newRootScreen(Screens.ListsScreen())
+        router.navigateTo(Screens.ListsScreen())
     }
 
     override fun onResume() {

@@ -1,4 +1,4 @@
-package com.example.ants_todo.presentation.lists.view
+package com.example.ants_todo.presentation.lists
 
 import android.graphics.Color
 import android.os.Bundle
@@ -15,7 +15,6 @@ import com.example.ants_todo.R
 import com.example.ants_todo.data.models.ListModel
 import com.example.ants_todo.presentation.lists.adapter.ItemSwipeCallback
 import com.example.ants_todo.presentation.lists.adapter.ListsAdapter
-import com.example.ants_todo.presentation.lists.viewModel.ListsViewModel
 import com.example.ants_todo.util.navigation.Screens
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.lists_fragment.*
@@ -32,11 +31,14 @@ class ListsView : Fragment(), KodeinAware {
     private val router: Router by instance()
 
     private lateinit var viewModel: ListsViewModel
+    private lateinit var listsModelFactory: ListsModelFactory
     private lateinit var listsAdapter: ListsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ListsViewModel::class.java)
+
+        listsModelFactory = ListsModelFactory(kodein)
+        viewModel = ViewModelProviders.of(this, listsModelFactory).get(ListsViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =

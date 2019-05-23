@@ -1,20 +1,24 @@
-package com.example.ants_todo.presentation.toDo.view
+package com.example.ants_todo.presentation.toDo
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.ants_todo.R
 import com.example.ants_todo.data.models.ListModel
-import com.example.ants_todo.presentation.toDo.viewModel.ToDoViewModel
 import kotlinx.android.synthetic.main.todo_fragment.*
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.kodein
 
-class ToDoView : Fragment() {
+class ToDoView : Fragment(), KodeinAware {
+    override val kodein: Kodein by kodein()
 
     private lateinit var viewModel: ToDoViewModel
-//    private var toDoModelFactory: ToDoModelFactory? = null
+    private lateinit var toDoModelFactory: ToDoModelFactory
 
     fun newInstance(list: ListModel): ToDoView {
         val fragment = ToDoView()
@@ -30,7 +34,9 @@ class ToDoView : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ToDoViewModel::class.java)
+
+        toDoModelFactory = ToDoModelFactory(listId, kodein)
+        viewModel = ViewModelProviders.of(this, toDoModelFactory).get(ToDoViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -41,7 +47,10 @@ class ToDoView : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         toDosToolbar.title = listName.toUpperCase()
-        viewModel.setList(listId)
+
+        viewModel.toDos.observe(this, Observer {
+
+        })
 
     }
 }
