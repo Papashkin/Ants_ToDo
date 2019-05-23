@@ -11,7 +11,7 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning"
             android:allowBackup="true"
-            android:fullBackupContent="">
+            android:fullBackupContent="true">
         <activity android:name=".presentation.common.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

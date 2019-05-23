@@ -18,7 +18,6 @@ import com.example.ants_todo.data.models.ToDoModel
 import com.example.ants_todo.presentation.toDo.adapter.ToDoAdapter
 import com.example.ants_todo.presentation.toDo.adapter.ToDoSwipeCallback
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.lists_fragment.*
 import kotlinx.android.synthetic.main.todo_fragment.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -94,6 +93,7 @@ class ToDoView : Fragment(), KodeinAware {
     private fun showAddDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_add_new_item, null)
         val insertedText = dialogView.findViewById<EditText>(R.id.etListName)
+        insertedText.hint = "Please, insert the item name"
         insertedText.requestFocus()
 
         AlertDialog.Builder(requireContext())
