@@ -9,7 +9,7 @@
     </style>
 
     <style name="ListsStyle" >
-        <item name="android:textColor">@color/color_black</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
         <item name="android:textSize">22sp</item>
         <item name="android:textAlignment">viewStart</item>
         <item name="android:layout_margin">10dp</item>
@@ -18,7 +18,7 @@
     </style>
 
     <style name="ToDosStyle" >
-        <item name="android:textColor">@color/color_black</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
         <item name="android:textSize">22sp</item>
         <item name="android:textAlignment">viewStart</item>
         <item name="android:layout_margin">10dp</item>
@@ -27,7 +27,7 @@
     </style>
 
     <style name="ToDoListToolbar" parent="Widget.AppCompat.Toolbar">
-        <item name="android:background">@color/color_black</item>
+        <item name="android:background">@color/color_cyan_toolbar</item>
         <item name="android:elevation">6dp</item>
     </style>
 
