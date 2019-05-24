@@ -8,7 +8,7 @@
             android:id="@+id/my_transition"
             motion:constraintSetEnd="@+id/ending_set"
             motion:constraintSetStart="@+id/starting_set"
-            app:duration="300"
+            app:duration="200"
             app:motionInterpolator="linear">
 
         <OnClick
