@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/mlAddNewList"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        app:layoutDescription="@xml/add_list_motion_scene"
+        android:elevation="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <Button android:id="@+id/buttonAddNewList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/lists_add_new_list"
+            android:textSize="20sp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/color_white"
+            android:padding="4dp"
+            android:background="@drawable/add_button_style"
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/ic_add_white_30"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    <RelativeLayout
+            android:id="@+id/etAddNewToDoItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/search_field_style"
+            app:layout_constraintTop_toBottomOf="@id/buttonAddNewList"
+            app:layout_constraintStart_toEndOf="@id/toolbarBackBtn"
+            app:layout_constraintEnd_toEndOf="parent">
+
+        <EditText
+                android:id="@+id/etNewList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:maxLines="1"
+                android:layout_toStartOf="@id/btnAddItem"
+                android:layout_alignParentStart="true"
+                android:hint="@string/todo_new_item_hint"
+                android:inputType="text"
+                tools:ignore="Autofill"/>
+
+        <ImageButton
+                android:id="@+id/btnAddItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_add_grey_24"
+                android:background="@color/color_white"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                tools:ignore="ContentDescription"/>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

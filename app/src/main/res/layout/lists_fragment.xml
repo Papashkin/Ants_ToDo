@@ -25,15 +25,8 @@
             app:layout_constraintTop_toBottomOf="@id/listsToolbar"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnAddList"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_margin="16dp"
-            app:fabSize="normal"
-            android:src="@drawable/ic_add_white_40"
-            app:backgroundTint="@color/color_red_fab" />
+    <include
+            android:id="@+id/mlAddNewList"
+            layout="@layout/add_list_button_motion"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

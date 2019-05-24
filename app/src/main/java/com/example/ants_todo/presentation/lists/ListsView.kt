@@ -2,11 +2,12 @@ package com.example.ants_todo.presentation.lists
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.motion.widget.MotionScene
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -17,7 +18,9 @@ import com.example.ants_todo.presentation.lists.adapter.ListsAdapter
 import com.example.ants_todo.presentation.lists.adapter.ListsSwipeCallback
 import com.example.ants_todo.util.navigation.Screens
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.add_list_button_motion.*
 import kotlinx.android.synthetic.main.lists_fragment.*
+import kotlinx.android.synthetic.main.lists_fragment.mlAddNewList
 
 class ListsView : BaseFragment() {
 
@@ -59,32 +62,47 @@ class ListsView : BaseFragment() {
     }
 
     private fun setListeners() {
-        btnAddList.setOnClickListener {
-            showAddDialog()
+        (mlAddNewList as MotionLayout).setTransitionListener(
+            object : MotionLayout.TransitionListener {
+                override fun onTransitionChange(layout: MotionLayout?, startId: Int, endId: Int, progress: Float) {}
+                override fun onTransitionTrigger(layout: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {}
+                override fun onTransitionStarted(layout: MotionLayout?, p1: Int, p2: Int) {}
+                override fun allowsTransition(p0: MotionScene.Transition?): Boolean = true
+                override fun onTransitionCompleted(layout: MotionLayout?, currentId: Int) {
+                    when (currentId) {
+                        layout?.endState -> {
+                            etNewList.requestFocus()
+                            showKeyboard()
+                        }
+                        layout?.startState -> {
+                            hideKeyboard()
+                        }
+                    }
+                }
+            }
+        )
+
+        btnAddItem.setOnClickListener {
+            val newName = etNewList.text.toString()
+            checkNewListName(newName)
+        }
+
+        etNewList.setOnKeyListener { _, keyCode, _ ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                checkNewListName(etNewList.text.toString())
+            }
+            true
         }
     }
 
-    private fun showAddDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_add_new_item, null)
-        val insertedText = dialogView.findViewById<EditText>(R.id.etListName)
-
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.lists_new_list_creation))
-            .setPositiveButton(getString(R.string.Ok)) { dialog, _ ->
-                val name = insertedText.text
-                if (name.isEmpty()) {
-                    showToast(R.string.invalid_data)
-                } else {
-                    addItem(name.toString())
-                    dialog.dismiss()
-                }
-            }
-            .setNegativeButton(getString(R.string.Cancel)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setView(dialogView)
-            .create()
-            .show()
+    private fun checkNewListName(name: String) {
+        if (name.isNotEmpty()) {
+            etNewList.text.clear()
+            (mlAddNewList as MotionLayout).transitionToStart()
+            addItem(name)
+        } else {
+            showToast(getString(R.string.invalid_data))
+        }
     }
 
     private fun addItem(name: String) {

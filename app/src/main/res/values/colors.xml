@@ -16,5 +16,6 @@
     <color name="color_red_fab">#FF5252</color>
 
     <color name="color_grey_400">#BDBDBD</color>
+    <color name="color_grey_500">#9E9E9E</color>
 
 </resources>
