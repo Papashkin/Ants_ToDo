@@ -6,31 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.ants_todo.R
 import com.example.ants_todo.data.models.ListModel
-import com.example.ants_todo.presentation.ToDoApplication
+import com.example.ants_todo.presentation.common.fragment.BaseFragment
 import com.example.ants_todo.presentation.lists.adapter.ListsAdapter
 import com.example.ants_todo.presentation.lists.adapter.ListsSwipeCallback
 import com.example.ants_todo.util.navigation.Screens
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.lists_fragment.*
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.erased.instance
-import ru.terrakok.cicerone.Router
 
-class ListsView : Fragment(), KodeinAware {
+class ListsView : BaseFragment() {
 
     private lateinit var viewModel: ListsViewModel
 
-    override val kodein: Kodein = ToDoApplication.getKodein()
-    private val router: Router by instance()
     private var listsAdapter: ListsAdapter = ListsAdapter(
         onItemClick = {
             router.navigateTo(Screens.ToDosScreen(it))
@@ -77,17 +69,17 @@ class ListsView : Fragment(), KodeinAware {
         val insertedText = dialogView.findViewById<EditText>(R.id.etListName)
 
         AlertDialog.Builder(requireContext())
-            .setTitle("New list creation")
-            .setPositiveButton("Ok") { dialog, _ ->
+            .setTitle(getString(R.string.lists_new_list_creation))
+            .setPositiveButton(getString(R.string.Ok)) { dialog, _ ->
                 val name = insertedText.text
                 if (name.isEmpty()) {
-                    Toast.makeText(requireContext(), "empty data!", Toast.LENGTH_SHORT).show()
+                    showToast(R.string.invalid_data)
                 } else {
                     addItem(name.toString())
                     dialog.dismiss()
                 }
             }
-            .setNegativeButton("Cancel") { dialog, _ ->
+            .setNegativeButton(getString(R.string.Cancel)) { dialog, _ ->
                 dialog.dismiss()
             }
             .setView(dialogView)
@@ -103,9 +95,9 @@ class ListsView : Fragment(), KodeinAware {
 
     private fun showSnackBar(listName: String) {
         Snackbar
-            .make(listsLayout, "List \"$listName\" was deleted", Snackbar.LENGTH_LONG)
+            .make(listsLayout, getString(R.string.lists_snackbar_message, listName), Snackbar.LENGTH_LONG)
             .setActionTextColor(Color.YELLOW)
-            .setAction("UNDO") {
+            .setAction(getString(R.string.undo)) {
                 viewModel.undoDeleting()
             }
             .show()

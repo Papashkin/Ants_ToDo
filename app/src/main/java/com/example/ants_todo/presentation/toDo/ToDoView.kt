@@ -5,27 +5,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.ants_todo.R
-import com.example.ants_todo.data.models.ListModel
 import com.example.ants_todo.data.models.ToDoModel
+import com.example.ants_todo.presentation.common.fragment.BaseFragment
 import com.example.ants_todo.presentation.toDo.adapter.ToDoAdapter
 import com.example.ants_todo.presentation.toDo.adapter.ToDoSwipeCallback
 import com.google.android.material.snackbar.Snackbar
+import com.pawegio.kandroid.runDelayed
+import com.pawegio.kandroid.toast
 import kotlinx.android.synthetic.main.todo_fragment.*
 
-class ToDoView : Fragment() {
-    fun newInstance(list: ListModel): ToDoView {
+class ToDoView : BaseFragment() {
+    fun newInstance(listId: Int, listName: String): ToDoView {
         val fragment = ToDoView()
         val args = Bundle()
-        fragment.listId = list.id
-        fragment.listName = list.name
+        fragment.listId = listId
+        fragment.listName = listName
         fragment.arguments = args
         return fragment
     }
@@ -42,16 +40,12 @@ class ToDoView : Fragment() {
         onItemDeleted = { name, id ->
             viewModel.deleteItem(id)
             showSnackBar(name)
-        },
-        onItemEdit = {
-
         }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        retainInstance = true
-        toDoModelFactory = ToDoModelFactory(listId)
+        toDoModelFactory = ToDoModelFactory(listId, listName)
         viewModel = ViewModelProviders.of(this, toDoModelFactory).get(ToDoViewModel::class.java)
     }
 
@@ -60,21 +54,28 @@ class ToDoView : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        toDosToolbar.title = listName.toUpperCase()
+        tvListName.text = viewModel.getListName().toUpperCase()
 
         setListeners()
         setAdapter()
-
-        viewModel.toDos.observe(this, Observer {
-            toDoAdapter.setList(it as ArrayList<ToDoModel>)
-        })
-
+        setObserver()
     }
 
     private fun setListeners() {
+        toolbarBackBtn.setOnClickListener {
+            hideKeyboard()
+            runDelayed(400) {
+                router.exit()
+            }
+        }
         btnAddItem.setOnClickListener {
-            showAddDialog()
+            val itemName = etNewItem.text.toString()
+            if (itemName.isNotEmpty()) {
+                etNewItem.text.clear()
+                addItem(itemName)
+            } else {
+                toast(R.string.invalid_data)
+            }
         }
     }
 
@@ -85,30 +86,11 @@ class ToDoView : Fragment() {
         toDosRecycler.adapter = toDoAdapter
     }
 
-    private fun showAddDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_add_new_item, null)
-        val insertedText = dialogView.findViewById<EditText>(R.id.etListName)
-        insertedText.hint = "Please, insert the item name"
-        insertedText.requestFocus()
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("New item creation")
-            .setPositiveButton("Ok") { dialog, _ ->
-                val name = insertedText.text
-                if (name.isEmpty()) {
-                    Toast.makeText(requireContext(), "empty data!", Toast.LENGTH_SHORT).show()
-                    return@setPositiveButton
-                } else {
-                    addItem(name.toString())
-                    dialog.dismiss()
-                }
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setView(dialogView)
-            .create()
-            .show()
+    private fun setObserver() {
+        viewModel.toDos.observe(this, Observer {
+            toDoAdapter.setList(it as ArrayList<ToDoModel>)
+            tvToDoCount.text = getString(R.string.todo_counter_text, it.filter { item -> item.isChecked }.size, it.size)
+        })
     }
 
     private fun addItem(name: String) {
@@ -123,9 +105,9 @@ class ToDoView : Fragment() {
 
     private fun showSnackBar(name: String) {
         Snackbar
-            .make(toDosLayout, "List \"$name\" was deleted", Snackbar.LENGTH_LONG)
+            .make(toDosLayout, getString(R.string.todo_snackbar_message, name), Snackbar.LENGTH_LONG)
             .setActionTextColor(Color.YELLOW)
-            .setAction("UNDO") {
+            .setAction(getString(R.string.undo)) {
                 viewModel.undoDeleting()
             }
             .show()

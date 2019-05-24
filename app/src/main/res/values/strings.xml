@@ -1,3 +1,21 @@
 <resources>
-    <string name="app_name">Ants_ToDo</string>
+    <string name="app_name">Ant\'s ToDo\'s</string>
+
+    <!-- ====== COMMON ====== -->
+    <string name="Ok">OK</string>
+    <string name="Cancel">Cancel</string>
+    <string name="undo">UNDO</string>
+    <string name="invalid_data">Invalid data</string>
+
+    <!-- ====== LIST ====== -->
+    <string name="lists_toolbar_title">Lists:</string>
+    <string name="lists_new_list_creation">New list creation</string>
+    <string name="lists_new_list_creation_hint">Please, insert the list name</string>
+    <string name="lists_snackbar_message">"List \" %1$s \" was deleted"</string>
+
+    <!-- ====== TO_DO ====== -->
+    <string name="todo_counter_text">(%1$d/%2$d)</string>
+    <string name="todo_new_item_hint">insert item name here</string>
+    <string name="todo_snackbar_message">"Item \" %1$s \" was deleted"</string>
+
 </resources>

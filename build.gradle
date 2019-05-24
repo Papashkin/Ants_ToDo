@@ -5,6 +5,7 @@ buildscript {
     ext.room_version = '2.0.0'
     ext.cicerone_version = '5.0.0'
     ext.kodein_version = '6.1.0'
+    ext.androidx_version= '1.0.0-beta01'
     repositories {
         google()
         jcenter()

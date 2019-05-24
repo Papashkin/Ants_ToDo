@@ -10,7 +10,7 @@
             android:id="@+id/etListName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Please, insert the list name"
+            android:hint="@string/lists_new_list_creation_hint"
             android:layout_margin="30dp"
             android:inputType="text" tools:ignore="Autofill"/>
 

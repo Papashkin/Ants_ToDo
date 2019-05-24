@@ -15,19 +15,92 @@
             app:layout_constraintTop_toTopOf="parent"
             style="@style/ToDoListToolbar"
             app:title="ToDo:"
-            app:titleTextColor="@color/color_white"/>
+            app:titleTextColor="@color/color_white"
+            app:contentInsetStart="0dp">
 
-    <ImageButton
-            android:id="@+id/btnAddItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_white_30"
-            style="@style/ToDoListToolbar"
-            android:layout_marginEnd="20dp"
-            app:layout_constraintTop_toTopOf="@id/toDosToolbar"
-            app:layout_constraintEnd_toEndOf="@id/toDosToolbar"
-            app:layout_constraintBottom_toBottomOf="@id/toDosToolbar"
-            tools:ignore="ContentDescription"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <ImageButton
+                    android:id="@+id/toolbarBackBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_left_white_40"
+                    android:background="@color/color_cyan_toolbar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:ignore="ContentDescription"/>
+
+            <TextView
+                    android:id="@+id/tvListName"
+                    tools:text="SOME LIST"
+                    android:textColor="@color/color_white"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/toolbarBackBtn"
+                    app:layout_constraintBottom_toTopOf="@id/etAddNewToDoItem"/>
+
+            <TextView
+                    android:id="@+id/tvToDoCount"
+                    tools:text="(99/999)"
+                    android:textColor="@color/color_white"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginStart="12dp"
+                    app:layout_constraintStart_toEndOf="@id/tvListName"
+                    app:layout_constraintBottom_toBottomOf="@id/tvListName"/>
+
+            <RelativeLayout
+                    android:id="@+id/etAddNewToDoItem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/search_field_style"
+                    app:layout_constraintTop_toBottomOf="@id/tvListName"
+                    app:layout_constraintStart_toEndOf="@id/toolbarBackBtn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                <EditText
+                        android:id="@+id/etNewItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="0dp"
+                        android:maxLines="1"
+                        android:layout_toStartOf="@id/btnAddItem"
+                        android:layout_alignParentStart="true"
+                        android:hint="@string/todo_new_item_hint"
+                        android:backgroundTint="@color/color_white"
+                        android:inputType="text"
+                        android:focusedByDefault="false"
+                        tools:ignore="Autofill"/>
+
+                <ImageButton
+                        android:id="@+id/btnAddItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_add_grey_24"
+                        android:background="@color/color_white"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        tools:ignore="ContentDescription"/>
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/toDosRecycler"
@@ -36,7 +109,6 @@
             android:layout_marginTop="1dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/toDosToolbar"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

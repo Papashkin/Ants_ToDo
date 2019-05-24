@@ -8,16 +8,17 @@ import com.example.ants_todo.presentation.common.fragment.BaseViewModel
 import org.kodein.di.Kodein
 import org.kodein.di.erased.instance
 
-class ToDoViewModel(listId: Int) : BaseViewModel() {
+class ToDoViewModel(listId: Int, listName: String) : BaseViewModel() {
 
     override val kodein: Kodein = ToDoApplication.getKodein()
 
     private val toDoRepo: ToDoRepository by instance()
     private var preDeletedToDo: ToDoModel? = null
-
+    private val listName: String
     var toDos: LiveData<List<ToDoModel>>
     init {
         toDos = toDoRepo.getToDos(listId)
+        this.listName = listName
     }
 
     fun addItem(item: ToDoModel) {
@@ -41,4 +42,6 @@ class ToDoViewModel(listId: Int) : BaseViewModel() {
             preDeletedToDo = null
         }
     }
+
+    fun getListName(): String = this.listName
 }

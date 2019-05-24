@@ -23,7 +23,6 @@
         <item name="android:textAlignment">viewStart</item>
         <item name="android:layout_margin">10dp</item>
         <item name="android:padding">2dp</item>
-        <item name="android:background">@color/color_white</item>
     </style>
 
     <style name="ToDoListToolbar" parent="Widget.AppCompat.Toolbar">

@@ -2,9 +2,10 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#757575</color>
     <color name="colorSecondaryText">#757575</color>
     <color name="colorPrimaryText">#212121</color>
+    <color name="colorDivider">#BDBDBD</color>
 
     <color name="color_white">#ffffff</color>
     <color name="color_black">#000000</color>
@@ -13,5 +14,7 @@
 
     <color name="color_cyan_toolbar">#0097A7</color>
     <color name="color_red_fab">#FF5252</color>
+
+    <color name="color_grey_400">#BDBDBD</color>
 
 </resources>
