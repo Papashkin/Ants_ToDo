@@ -15,7 +15,6 @@ import com.example.ants_todo.presentation.toDo.adapter.ToDoAdapter
 import com.example.ants_todo.presentation.toDo.adapter.ToDoSwipeCallback
 import com.google.android.material.snackbar.Snackbar
 import com.pawegio.kandroid.runDelayed
-import com.pawegio.kandroid.toast
 import kotlinx.android.synthetic.main.todo_fragment.*
 
 class ToDoView : BaseFragment() {
@@ -74,7 +73,7 @@ class ToDoView : BaseFragment() {
                 etNewItem.text.clear()
                 addItem(itemName)
             } else {
-                toast(R.string.invalid_data)
+                showToast(R.string.invalid_data)
             }
         }
     }
