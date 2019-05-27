@@ -1,13 +1,13 @@
 package com.example.ants_todo.presentation.toDo.adapter
 
-import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ants_todo.R
 import com.example.ants_todo.data.models.ToDoModel
-import kotlinx.android.synthetic.main.todo_list_view.view.*
+import com.example.ants_todo.databinding.TodoListViewBinding
 
 class ToDoAdapter(
     private val onItemClicked: (id: Int) -> Unit,
@@ -15,6 +15,11 @@ class ToDoAdapter(
 ) : RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder>() {
 
     private var toDoList = arrayListOf<ToDoModel>()
+    private val listener = object : ToDoClickListener {
+        override fun onClick(id: Int) {
+            onItemClicked.invoke(id)
+        }
+    }
 
     fun setList(items: ArrayList<ToDoModel>) {
         toDoList.clear()
@@ -28,38 +33,22 @@ class ToDoAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToDoViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.todo_list_view, parent, false)
-        return ToDoViewHolder(view)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = DataBindingUtil.inflate<TodoListViewBinding>(inflater, R.layout.todo_list_view, parent, false)
+        return ToDoViewHolder(binding.root)
     }
 
     override fun getItemCount(): Int = toDoList.size
 
     override fun onBindViewHolder(holder: ToDoViewHolder, position: Int) {
-        holder.bind(toDoList[position])
+        holder.getBinding().todo = toDoList[position]
+        holder.getBinding().listener = listener
     }
 
 
     inner class ToDoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val binding: TodoListViewBinding = DataBindingUtil.bind(view)!!
 
-        fun bind(item: ToDoModel) {
-            itemView.todoName.text = item.name
-            setLayoutParams(item.isChecked)
-
-            itemView.layoutToDo.setOnClickListener {
-                onItemClicked.invoke(item.id)
-            }
-        }
-
-        private fun setLayoutParams(isChecked: Boolean) {
-            if (isChecked) {
-                itemView.layoutToDo.background = itemView.resources.getDrawable(R.color.color_grey_400, null)
-                itemView.todoName.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-                itemView.layoutToDo.alpha = 0.8f
-            } else {
-                itemView.layoutToDo.background = itemView.resources.getDrawable(R.color.color_white, null)
-                itemView.todoName.paintFlags = Paint.ANTI_ALIAS_FLAG
-                itemView.layoutToDo.alpha = 1f
-            }
-        }
+        fun getBinding(): TodoListViewBinding = binding
     }
 }

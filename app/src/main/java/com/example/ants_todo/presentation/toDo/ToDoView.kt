@@ -62,8 +62,12 @@ class ToDoView : BaseFragment() {
 
     private fun setListeners() {
         toolbarBackBtn.setOnClickListener {
-            hideKeyboard()
-            runDelayed(400) {
+            if (etNewItem.isFocused) {
+                hideKeyboard()
+                runDelayed(300) {
+                    router.exit()
+                }
+            } else {
                 router.exit()
             }
         }
