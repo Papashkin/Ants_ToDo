@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ants_todo.R
-import com.example.ants_todo.presentation.lists.adapter.ListsAdapter
 
 class ListsSwipeCallback(private val todoAdapter: ListsAdapter) : ItemTouchHelper.Callback() {
 

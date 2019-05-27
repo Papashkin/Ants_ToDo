@@ -3,25 +3,35 @@ package com.example.ants_todo.presentation.lists.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ants_todo.R
 import com.example.ants_todo.data.models.ListModel
+import com.example.ants_todo.databinding.ListsViewBinding
+
 
 class ListsAdapter(
     private val onItemClick: (list: ListModel) -> Unit,
     private val onItemDelete: (id: Int, name: String) -> Unit
-) : ListAdapter<ListModel, ListsAdapter.TodoViewHolder>(ListsItemCallback()) {
+) : ListAdapter<ListModel, ListsAdapter.ListViewHolder2>(ListsItemCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, pos: Int): TodoViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.lists_view, parent, false)
-        return TodoViewHolder(view)
+    private val itemListener = object : OnListsItemClickListener {
+        override fun onClick(item: ListModel) {
+            onItemClick.invoke(item)
+        }
     }
 
-    override fun onBindViewHolder(viewHolder: TodoViewHolder, pos: Int) {
-        val item = getItem(pos)
-        viewHolder.bind(item)
+    override fun onCreateViewHolder(parent: ViewGroup, pos: Int): ListViewHolder2 {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = DataBindingUtil.inflate<ListsViewBinding>(inflater, R.layout.lists_view, parent, false)
+        return ListViewHolder2(binding.root)
+    }
+
+    override fun onBindViewHolder(viewHolder: ListViewHolder2, pos: Int) {
+        viewHolder.getBinding().list = getItem(pos)
+        viewHolder.getBinding().listener = itemListener
+        viewHolder.getBinding().executePendingBindings()
     }
 
     fun deleteItem(position: Int) {
@@ -29,16 +39,9 @@ class ListsAdapter(
         onItemDelete.invoke(item.id, item.name)
     }
 
-    inner class TodoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val textVew = itemView.findViewById<TextView>(R.id.listName)
+    inner class ListViewHolder2(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val binding: ListsViewBinding = DataBindingUtil.bind(itemView)!!
 
-        fun bind(item: ListModel) {
-            textVew.text = item.name
-
-            textVew.setOnClickListener {
-                onItemClick.invoke(item)
-            }
-        }
+        fun getBinding() = binding
     }
-
 }
