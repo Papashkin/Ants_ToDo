@@ -35,6 +35,23 @@ class ListsView : BaseFragment() {
             showSnackBar(name)
         }
     )
+    private val transitionListener = object : MotionLayout.TransitionListener {
+        override fun onTransitionChange(layout: MotionLayout?, startId: Int, endId: Int, progress: Float) {}
+        override fun onTransitionTrigger(layout: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {}
+        override fun onTransitionStarted(layout: MotionLayout?, p1: Int, p2: Int) {}
+        override fun allowsTransition(p0: MotionScene.Transition?): Boolean = true
+        override fun onTransitionCompleted(layout: MotionLayout?, currentId: Int) {
+            when (currentId) {
+                layout?.endState -> {
+                    etNewList.requestFocus()
+                    showKeyboard()
+                }
+                layout?.startState -> {
+                    hideKeyboard()
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,25 +79,7 @@ class ListsView : BaseFragment() {
     }
 
     private fun setListeners() {
-        (mlAddNewList as MotionLayout).setTransitionListener(
-            object : MotionLayout.TransitionListener {
-                override fun onTransitionChange(layout: MotionLayout?, startId: Int, endId: Int, progress: Float) {}
-                override fun onTransitionTrigger(layout: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {}
-                override fun onTransitionStarted(layout: MotionLayout?, p1: Int, p2: Int) {}
-                override fun allowsTransition(p0: MotionScene.Transition?): Boolean = true
-                override fun onTransitionCompleted(layout: MotionLayout?, currentId: Int) {
-                    when (currentId) {
-                        layout?.endState -> {
-                            etNewList.requestFocus()
-                            showKeyboard()
-                        }
-                        layout?.startState -> {
-                            hideKeyboard()
-                        }
-                    }
-                }
-            }
-        )
+        (mlAddNewList as MotionLayout).setTransitionListener(transitionListener)
 
         btnAddItem.setOnClickListener {
             val newName = etNewList.text.toString()
@@ -119,5 +118,10 @@ class ListsView : BaseFragment() {
                 viewModel.undoDeleting()
             }
             .show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (mlAddNewList as MotionLayout).transitionToStart()
     }
 }

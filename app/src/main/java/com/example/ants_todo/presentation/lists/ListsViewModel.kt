@@ -7,12 +7,13 @@ import com.example.ants_todo.presentation.common.fragment.BaseViewModel
 import org.kodein.di.erased.instance
 
 
-class ListsViewModel : BaseViewModel()  {
+class ListsViewModel : BaseViewModel() {
 
     private val repo: ListsRepository by instance()
     private var preDeletedList: ListModel? = null
 
     val listModel: LiveData<List<ListModel>>
+
     init {
         listModel = repo.getAll()
     }
