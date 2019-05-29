@@ -1,6 +1,5 @@
 package com.example.ants_todo.data.db.lists
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.ants_todo.data.models.ListModel
 
@@ -8,14 +7,14 @@ import com.example.ants_todo.data.models.ListModel
 interface ListsDao {
 
     @Query("SELECT * from lists")
-    fun getAll(): LiveData<List<ListModel>>
+    suspend fun getAll(): List<ListModel>
 
     @Query("Select * from lists where id = :id")
-    fun getById(id: Int): ListModel
+    suspend fun getById(id: Int): ListModel
 
     @Insert
-    fun add(list: ListModel)
+    suspend fun add(list: ListModel)
 
     @Delete
-    fun delete(list: ListModel)
+    suspend fun delete(list: ListModel)
 }

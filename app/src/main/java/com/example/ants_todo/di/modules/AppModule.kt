@@ -16,7 +16,6 @@ val appModule = Kodein.Module("app") {
     // таблица со списками
     bind<ListsDatabase>() with singleton {
         Room.databaseBuilder(instance(), ListsDatabase::class.java, "lists")
-            .allowMainThreadQueries()
             .build()
     }
     bind<ListsDao>() with singleton { instance<ListsDatabase>().listDao() }
