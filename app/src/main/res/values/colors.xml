@@ -17,5 +17,6 @@
 
     <color name="color_grey_400">#BDBDBD</color>
     <color name="color_grey_500">#9E9E9E</color>
+    <color name="color_grey_700">#616161</color>
 
 </resources>
