@@ -1,12 +1,12 @@
 package com.example.ants_todo.presentation.toDo
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.example.ants_todo.data.models.ToDoModel
 import com.example.ants_todo.data.repositories.ToDoRepository
 import com.example.ants_todo.presentation.ToDoApplication
 import com.example.ants_todo.presentation.common.fragment.BaseViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.erased.instance
@@ -19,37 +19,30 @@ class ToDoViewModel(private val listId: Int, private val listName: String) : Bas
     private val toDoRepository: ToDoRepository by instance()
     private var preDeletedToDo: ToDoModel? = null
 
-    var toDos: MutableLiveData<List<ToDoModel>> = MutableLiveData()
-
+    val toDos: LiveData<List<ToDoModel>>
     init {
-        getDataFromDB()
+        toDos = liveData {
+            emitSource(toDoRepository.getToDosAsync(listId).await())
+        }
     }
 
-    private fun getDataFromDB() = CoroutineScope(Dispatchers.Default).launch {
-        toDos.postValue(toDoRepository.getToDos(listId))
+    fun addItem(item: ToDoModel) = viewModelScope.launch {
+        toDoRepository.insertAsync(item).await()
     }
 
-    fun addItem(item: ToDoModel) = CoroutineScope(Dispatchers.Default).launch {
-        toDoRepository.insert(item)
-        getDataFromDB()
+    fun deleteItem(id: Int) = viewModelScope.launch {
+        preDeletedToDo = toDoRepository.getByIdAsync(id).await()
+        toDoRepository.deleteAsync(preDeletedToDo!!).await()
     }
 
-    fun deleteItem(id: Int) = CoroutineScope(Dispatchers.Default).launch {
-        preDeletedToDo = toDoRepository.getById(id)
-        toDoRepository.delete(preDeletedToDo!!)
-        getDataFromDB()
-    }
-
-    fun updateItem(id: Int) = CoroutineScope(Dispatchers.Default).launch {
-        val updatedItem = toDoRepository.getById(id)
+    fun updateItem(id: Int) = viewModelScope.launch {
+        val updatedItem = toDoRepository.getByIdAsync(id).await()
         updatedItem.isChecked = !updatedItem.isChecked
-        toDoRepository.update(updatedItem)
-        getDataFromDB()
+        toDoRepository.updateAsync(updatedItem).await()
     }
 
-    fun undoDeleting() = CoroutineScope(Dispatchers.Default).launch {
-        toDoRepository.insert(preDeletedToDo!!)
-        getDataFromDB()
+    fun undoDeleting() = viewModelScope.launch {
+        toDoRepository.insertAsync(preDeletedToDo!!).await()
         preDeletedToDo = null
     }
 

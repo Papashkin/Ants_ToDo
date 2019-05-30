@@ -1,11 +1,11 @@
 package com.example.ants_todo.presentation.lists
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.example.ants_todo.data.models.ListModel
 import com.example.ants_todo.data.repositories.ListsRepository
 import com.example.ants_todo.presentation.common.fragment.BaseViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.kodein.di.erased.instance
 
@@ -15,25 +15,20 @@ class ListsViewModel : BaseViewModel() {
     private val listsRepository: ListsRepository by instance()
     private var preDeletedList: ListModel? = null
 
-    var listModel: MutableLiveData<List<ListModel>> = MutableLiveData()
-
+    val listModel: LiveData<List<ListModel>>
     init {
-        getDataFromDB()
+        listModel = liveData {
+            emitSource(listsRepository.getAllAsync().await())
+        }
     }
 
-    private fun getDataFromDB() = CoroutineScope(Dispatchers.Default).launch {
-        listModel.postValue(listsRepository.getAllAsync())
+    fun addItem(item: ListModel) = viewModelScope.launch {
+        listsRepository.insertAsync(item).await()
     }
 
-    fun addItem(item: ListModel) = CoroutineScope(Dispatchers.Default).launch {
-        listsRepository.insertAsync(item)
-        getDataFromDB()
-    }
-
-    fun deleteItem(id: Int) = CoroutineScope(Dispatchers.Default).launch {
-        preDeletedList = listsRepository.getListByIdAsync(id)
-        listsRepository.deleteAsync(preDeletedList!!)
-        getDataFromDB()
+    fun deleteItem(id: Int) = viewModelScope.launch {
+        preDeletedList = listsRepository.getListByIdAsync(id).await()
+        listsRepository.deleteAsync(preDeletedList!!).await()
     }
 
     fun undoDeleting() {
@@ -41,8 +36,7 @@ class ListsViewModel : BaseViewModel() {
         preDeletedList = null
     }
 
-    private fun undo(item: ListModel) = CoroutineScope(Dispatchers.Default).launch {
-        listsRepository.insertAsync(item)
-        getDataFromDB()
+    private fun undo(item: ListModel) = viewModelScope.launch {
+        listsRepository.insertAsync(item).await()
     }
 }
