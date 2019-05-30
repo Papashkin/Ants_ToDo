@@ -74,7 +74,7 @@ class ToDoView : BaseFragment() {
         ibAddItem.setOnClickListener {
             val itemName = etNewItem.text.toString()
             if (itemName.isNotEmpty()) {
-                etNewItem.text.clear()
+//                etNewItem.text.clear()
                 addItem(itemName)
             } else {
                 showToast(R.string.invalid_data)
@@ -108,7 +108,13 @@ class ToDoView : BaseFragment() {
     private fun setObservers() {
         viewModel.toDos.observe(this, Observer {
             toDoAdapter.setList(it as ArrayList<ToDoModel>)
+            etNewItem.text.clear()
             tvToDoCount.text = getString(R.string.todo_counter_text, it.filter { item -> item.isChecked }.size, it.size)
+        })
+        viewModel.isExisted.observe(this, Observer {
+            if (it) {
+                showToast(getString(R.string.todo_existed_name_message))
+            }
         })
     }
 
