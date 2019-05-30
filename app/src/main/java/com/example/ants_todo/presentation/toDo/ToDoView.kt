@@ -57,7 +57,7 @@ class ToDoView : BaseFragment() {
 
         setListeners()
         setAdapter()
-        setObserver()
+        setObservers()
     }
 
     private fun setListeners() {
@@ -89,7 +89,7 @@ class ToDoView : BaseFragment() {
         toDosRecycler.adapter = toDoAdapter
     }
 
-    private fun setObserver() {
+    private fun setObservers() {
         viewModel.toDos.observe(this, Observer {
             toDoAdapter.setList(it as ArrayList<ToDoModel>)
             tvToDoCount.text = getString(R.string.todo_counter_text, it.filter { item -> item.isChecked }.size, it.size)

@@ -1,11 +1,12 @@
 package com.example.ants_todo.presentation.toDo
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.example.ants_todo.data.models.ToDoModel
 import com.example.ants_todo.data.repositories.ToDoRepository
 import com.example.ants_todo.presentation.ToDoApplication
 import com.example.ants_todo.presentation.common.fragment.BaseViewModel
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.erased.instance
@@ -17,40 +18,31 @@ class ToDoViewModel(private val listId: Int, private val listName: String) : Bas
 
     private val toDoRepo: ToDoRepository by instance()
     private var preDeletedToDo: ToDoModel? = null
-    private var dataFromDB: List<ToDoModel> = listOf()
 
-    var toDos: MutableLiveData<List<ToDoModel>> = MutableLiveData()
-
+    val toDos: LiveData<List<ToDoModel>>
     init {
-        getDataFromDB()
+        toDos = liveData {
+            emitSource(toDoRepo.getToDosAsync(listId).await())
+        }
     }
 
-    private fun getDataFromDB() = GlobalScope.launch {
-        dataFromDB = toDoRepo.getToDos(listId)
-        toDos.postValue(dataFromDB)
+    fun addItem(item: ToDoModel) = viewModelScope.launch {
+        toDoRepo.insert(item).await()
     }
 
-    fun addItem(item: ToDoModel) = GlobalScope.launch {
-        toDoRepo.insert(item)
-        getDataFromDB()
+    fun deleteItem(id: Int) = viewModelScope.launch {
+        preDeletedToDo = toDoRepo.getById(id).await()
+        toDoRepo.delete(preDeletedToDo!!).await()
     }
 
-    fun deleteItem(id: Int) = GlobalScope.launch {
-        preDeletedToDo = toDoRepo.getById(id)
-        toDoRepo.delete(preDeletedToDo!!)
-        getDataFromDB()
-    }
-
-    fun updateItem(id: Int) = GlobalScope.launch {
-        val updatedItem = toDoRepo.getById(id)
+    fun updateItem(id: Int) = viewModelScope.launch {
+        val updatedItem = toDoRepo.getById(id).await()
         updatedItem.isChecked = !updatedItem.isChecked
-        toDoRepo.update(updatedItem)
-        getDataFromDB()
+        toDoRepo.update(updatedItem).await()
     }
 
-    fun undoDeleting() = GlobalScope.launch {
-        toDoRepo.insert(preDeletedToDo!!)
-        getDataFromDB()
+    fun undoDeleting() = viewModelScope.launch {
+        toDoRepo.insert(preDeletedToDo!!).await()
         preDeletedToDo = null
     }
 

@@ -1,10 +1,11 @@
 package com.example.ants_todo.presentation.lists
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.example.ants_todo.data.models.ListModel
 import com.example.ants_todo.data.repositories.ListsRepository
 import com.example.ants_todo.presentation.common.fragment.BaseViewModel
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.kodein.di.erased.instance
 
@@ -13,28 +14,21 @@ class ListsViewModel : BaseViewModel() {
 
     private val repo: ListsRepository by instance()
     private var preDeletedList: ListModel? = null
-    private var dataFromDB: List<ListModel> = listOf()
 
-    var listModel: MutableLiveData<List<ListModel>> = MutableLiveData()
-
+    val listModel: LiveData<List<ListModel>>
     init {
-        getDataFromDB()
+        listModel = liveData {
+            emitSource(repo.getAllAsync().await())
+        }
     }
 
-    private fun getDataFromDB() = GlobalScope.launch {
-        dataFromDB = repo.getAllAsync()
-        listModel.postValue(dataFromDB)
-    }
-
-    fun addItem(item: ListModel) = GlobalScope.launch {
+    fun addItem(item: ListModel) = viewModelScope.launch {
         repo.insertAsync(item)
-        getDataFromDB()
     }
 
-    fun deleteItem(id: Int) = GlobalScope.launch {
+    fun deleteItem(id: Int) = viewModelScope.launch {
         preDeletedList = repo.getListByIdAsync(id)
         repo.deleteAsync(preDeletedList!!)
-        getDataFromDB()
     }
 
     fun undoDeleting() {
@@ -42,8 +36,7 @@ class ListsViewModel : BaseViewModel() {
         preDeletedList = null
     }
 
-    private fun undo(item: ListModel) = GlobalScope.launch {
+    private fun undo(item: ListModel) = viewModelScope.launch {
         repo.insertAsync(item)
-        getDataFromDB()
     }
 }

@@ -1,5 +1,6 @@
 package com.example.ants_todo.data.db.toDo
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.ants_todo.data.models.ToDoModel
 
@@ -7,7 +8,7 @@ import com.example.ants_todo.data.models.ToDoModel
 interface ToDoDao {
 
     @Query("SELECT * from toDos where listId = :listId")
-    suspend fun getToDos(listId: Int): List<ToDoModel>
+    fun getToDos(listId: Int): LiveData<List<ToDoModel>>
 
     @Query("Select * from toDos where name = :name")
     suspend fun getByName(name: String): ToDoModel
