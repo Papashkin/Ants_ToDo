@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.add_list_button_motion.*
 import kotlinx.android.synthetic.main.lists_fragment.*
 import kotlinx.android.synthetic.main.lists_fragment.mlAddNewList
 
+
 class ListsView : BaseFragment() {
 
     private lateinit var viewModel: ListsViewModel
