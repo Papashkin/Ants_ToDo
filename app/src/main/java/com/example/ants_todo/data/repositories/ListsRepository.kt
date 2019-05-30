@@ -1,16 +1,26 @@
 package com.example.ants_todo.data.repositories
 
-import com.example.ants_todo.data.models.ListModel
 import com.example.ants_todo.data.db.lists.ListsDao
+import com.example.ants_todo.data.models.ListModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class ListsRepository(private val dao: ListsDao) {
 
-    fun getAll() = dao.getAll()
+    suspend fun getAllAsync() = withContext(Dispatchers.IO) {
+        dao.getAll()
+    }
 
-    fun getListById(id: Int) = dao.getById(id)
+    suspend fun getListByIdAsync(id: Int) = withContext(Dispatchers.IO) {
+        dao.getById(id)
+    }
 
-    fun insert(list: ListModel) = dao.add(list)
+    suspend fun insertAsync(list: ListModel) = withContext(Dispatchers.IO) {
+        dao.add(list)
+    }
 
-    fun delete(list: ListModel) = dao.delete(list)
+    suspend fun deleteAsync(list: ListModel) = withContext(Dispatchers.IO) {
+        dao.delete(list)
+    }
 
 }
