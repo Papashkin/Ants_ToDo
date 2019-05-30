@@ -19,4 +19,7 @@
     <string name="todo_new_item_hint">insert item name here</string>
     <string name="todo_snackbar_message">"Item \" %1$s \" was deleted"</string>
 
+    <!-- ====== TO_DO menu ====== -->
+    <string name="menu_uncheck_all">uncheck all</string>
+
 </resources>
