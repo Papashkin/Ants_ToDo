@@ -79,7 +79,7 @@ class ListsView : BaseFragment() {
     private fun setListeners() {
         (mlAddNewList as MotionLayout).setTransitionListener(transitionListener)
 
-        btnAddItem.setOnClickListener {
+        ibAddItem.setOnClickListener {
             val newName = etNewList.text.toString()
             checkNewListName(newName)
         }

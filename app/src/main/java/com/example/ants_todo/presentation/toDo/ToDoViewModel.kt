@@ -46,5 +46,12 @@ class ToDoViewModel(private val listId: Int, private val listName: String) : Bas
         preDeletedToDo = null
     }
 
+    fun uncheckAll() = viewModelScope.launch {
+        toDos.value?.forEach {
+            it.isChecked = false
+            toDoRepository.updateAsync(it).await()
+        }
+    }
+
     fun getListName(): String = this.listName
 }

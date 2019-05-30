@@ -2,9 +2,8 @@ package com.example.ants_todo.presentation.toDo
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.PopupMenu
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -29,6 +28,7 @@ class ToDoView : BaseFragment() {
 
     private lateinit var viewModel: ToDoViewModel
     private lateinit var toDoModelFactory: ToDoModelFactory
+    private lateinit var menu: PopupMenu
 
     private var listId: Int = -1
     private var listName: String = ""
@@ -61,7 +61,7 @@ class ToDoView : BaseFragment() {
     }
 
     private fun setListeners() {
-        toolbarBackBtn.setOnClickListener {
+        ibToolbarBack.setOnClickListener {
             if (etNewItem.isFocused) {
                 hideKeyboard()
                 runDelayed(300) {
@@ -71,7 +71,7 @@ class ToDoView : BaseFragment() {
                 router.exit()
             }
         }
-        btnAddItem.setOnClickListener {
+        ibAddItem.setOnClickListener {
             val itemName = etNewItem.text.toString()
             if (itemName.isNotEmpty()) {
                 etNewItem.text.clear()
@@ -80,6 +80,22 @@ class ToDoView : BaseFragment() {
                 showToast(R.string.invalid_data)
             }
         }
+        ibMenu.setOnClickListener {
+            showPopupMenu(it)
+        }
+    }
+
+    private fun showPopupMenu(view: View) {
+        menu = PopupMenu(this.context, view)
+        menu.inflate(R.menu.menu_todo)
+        menu.setOnMenuItemClickListener {
+            viewModel.uncheckAll()
+            true
+        }
+        menu.setOnDismissListener {
+            it.dismiss()
+        }
+        menu.show()
     }
 
     private fun setAdapter() {

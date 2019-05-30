@@ -26,11 +26,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
 
-        <Constraint android:id="@+id/etAddNewToDoItem"
+        <Constraint android:id="@+id/rlAddNewToDoItem"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/buttonAddNewList"
-                    app:layout_constraintStart_toEndOf="@id/toolbarBackBtn"
+                    app:layout_constraintStart_toEndOf="@id/ibToolbarBack"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
     </ConstraintSet>
@@ -40,11 +40,11 @@
         <Constraint android:id="@+id/buttonAddNewList"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toTopOf="@id/etAddNewToDoItem"
+                    app:layout_constraintBottom_toTopOf="@id/rlAddNewToDoItem"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
 
-        <Constraint android:id="@+id/etAddNewToDoItem"
+        <Constraint android:id="@+id/rlAddNewToDoItem"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
