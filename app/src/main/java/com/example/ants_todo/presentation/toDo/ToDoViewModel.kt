@@ -16,33 +16,33 @@ class ToDoViewModel(private val listId: Int, private val listName: String) : Bas
 
     override val kodein: Kodein = ToDoApplication.getKodein()
 
-    private val toDoRepo: ToDoRepository by instance()
+    private val toDoRepository: ToDoRepository by instance()
     private var preDeletedToDo: ToDoModel? = null
 
     val toDos: LiveData<List<ToDoModel>>
     init {
         toDos = liveData {
-            emitSource(toDoRepo.getToDosAsync(listId).await())
+            emitSource(toDoRepository.getToDosAsync(listId).await())
         }
     }
 
     fun addItem(item: ToDoModel) = viewModelScope.launch {
-        toDoRepo.insert(item).await()
+        toDoRepository.insert(item).await()
     }
 
     fun deleteItem(id: Int) = viewModelScope.launch {
-        preDeletedToDo = toDoRepo.getById(id).await()
-        toDoRepo.delete(preDeletedToDo!!).await()
+        preDeletedToDo = toDoRepository.getById(id).await()
+        toDoRepository.delete(preDeletedToDo!!)
     }
 
     fun updateItem(id: Int) = viewModelScope.launch {
-        val updatedItem = toDoRepo.getById(id).await()
+        val updatedItem = toDoRepository.getById(id).await()
         updatedItem.isChecked = !updatedItem.isChecked
-        toDoRepo.update(updatedItem).await()
+        toDoRepository.update(updatedItem).await()
     }
 
     fun undoDeleting() = viewModelScope.launch {
-        toDoRepo.insert(preDeletedToDo!!).await()
+        toDoRepository.insert(preDeletedToDo!!).await()
         preDeletedToDo = null
     }
 

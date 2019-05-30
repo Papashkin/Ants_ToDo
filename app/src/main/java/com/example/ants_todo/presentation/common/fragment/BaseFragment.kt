@@ -1,18 +1,33 @@
 package com.example.ants_todo.presentation.common.fragment
 
+import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import com.example.ants_todo.presentation.ToDoApplication
 import com.pawegio.kandroid.inputMethodManager
 import com.pawegio.kandroid.toast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.erased.instance
 import ru.terrakok.cicerone.Router
+import kotlin.coroutines.CoroutineContext
 
-abstract class BaseFragment(override val kodein: Kodein = ToDoApplication.getKodein()): Fragment(), KodeinAware {
+abstract class BaseFragment(override val kodein: Kodein = ToDoApplication.getKodein()) : Fragment(), KodeinAware,
+    CoroutineScope {
 
+    private lateinit var job: Job
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
     val router: Router by instance()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        job = Job()
+    }
 
     fun showToast(text: String) {
         toast(text)
@@ -30,5 +45,10 @@ abstract class BaseFragment(override val kodein: Kodein = ToDoApplication.getKod
     fun hideKeyboard() {
         val inputMethodManager = activity!!.inputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(view!!.windowToken, 0)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
     }
 }

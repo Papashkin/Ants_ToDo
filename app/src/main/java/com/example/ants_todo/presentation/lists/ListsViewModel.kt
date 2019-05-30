@@ -12,23 +12,23 @@ import org.kodein.di.erased.instance
 
 class ListsViewModel : BaseViewModel() {
 
-    private val repo: ListsRepository by instance()
+    private val listsRepository: ListsRepository by instance()
     private var preDeletedList: ListModel? = null
 
     val listModel: LiveData<List<ListModel>>
     init {
         listModel = liveData {
-            emitSource(repo.getAllAsync().await())
+            emitSource(listsRepository.getAllAsync().await())
         }
     }
 
     fun addItem(item: ListModel) = viewModelScope.launch {
-        repo.insertAsync(item)
+        listsRepository.insertAsync(item)
     }
 
     fun deleteItem(id: Int) = viewModelScope.launch {
-        preDeletedList = repo.getListByIdAsync(id)
-        repo.deleteAsync(preDeletedList!!)
+        preDeletedList = listsRepository.getListByIdAsync(id)
+        listsRepository.deleteAsync(preDeletedList!!)
     }
 
     fun undoDeleting() {
@@ -36,7 +36,8 @@ class ListsViewModel : BaseViewModel() {
         preDeletedList = null
     }
 
+
     private fun undo(item: ListModel) = viewModelScope.launch {
-        repo.insertAsync(item)
+        listsRepository.insertAsync(item)
     }
 }

@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.add_list_button_motion.*
 import kotlinx.android.synthetic.main.lists_fragment.*
 import kotlinx.android.synthetic.main.lists_fragment.mlAddNewList
 
+
 class ListsView : BaseFragment() {
 
     private lateinit var viewModel: ListsViewModel
@@ -65,10 +66,7 @@ class ListsView : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setAdapter()
         setListeners()
-
-        viewModel.listModel.observe(this, Observer {
-            listsAdapter.submitList(it)
-        })
+        setObservers()
     }
 
     private fun setAdapter() {
@@ -92,6 +90,12 @@ class ListsView : BaseFragment() {
             }
             true
         }
+    }
+
+    private fun setObservers() {
+        viewModel.listModel.observe(this, Observer {
+            listsAdapter.submitList(it)
+        })
     }
 
     private fun checkNewListName(name: String) {
