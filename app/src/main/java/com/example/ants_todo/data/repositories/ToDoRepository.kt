@@ -2,19 +2,29 @@ package com.example.ants_todo.data.repositories
 
 import com.example.ants_todo.data.db.toDo.ToDoDao
 import com.example.ants_todo.data.models.ToDoModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class ToDoRepository(private val dao: ToDoDao) {
 
-    fun getToDos(id: Int) = dao.getToDos(id)
+    suspend fun getToDos(id: Int) = withContext(Dispatchers.IO) {
+        dao.getToDos(id)
+    }
 
-    fun getByName(name: String) = dao.getByName(name)
+    suspend fun getById(id: Int) = withContext(Dispatchers.IO) {
+        dao.getById(id)
+    }
 
-    fun getById(id: Int) = dao.getById(id)
+    suspend fun insert(list: ToDoModel) = withContext(Dispatchers.IO) {
+        dao.add(list)
+    }
 
-    fun insert(list: ToDoModel) = dao.add(list)
+    suspend fun delete(list: ToDoModel) = withContext(Dispatchers.IO) {
+        dao.delete(list)
+    }
 
-    fun delete(list: ToDoModel) = dao.delete(list)
-
-    fun update(list: ToDoModel) = dao.update(list)
+    suspend fun update(list: ToDoModel) = withContext(Dispatchers.IO) {
+        dao.update(list)
+    }
 
 }
