@@ -23,12 +23,12 @@ class ListsViewModel : BaseViewModel() {
     }
 
     fun addItem(item: ListModel) = viewModelScope.launch {
-        listsRepository.insertAsync(item)
+        listsRepository.insertAsync(item).await()
     }
 
     fun deleteItem(id: Int) = viewModelScope.launch {
-        preDeletedList = listsRepository.getListByIdAsync(id)
-        listsRepository.deleteAsync(preDeletedList!!)
+        preDeletedList = listsRepository.getListByIdAsync(id).await()
+        listsRepository.deleteAsync(preDeletedList!!).await()
     }
 
     fun undoDeleting() {
@@ -36,8 +36,7 @@ class ListsViewModel : BaseViewModel() {
         preDeletedList = null
     }
 
-
     private fun undo(item: ListModel) = viewModelScope.launch {
-        listsRepository.insertAsync(item)
+        listsRepository.insertAsync(item).await()
     }
 }

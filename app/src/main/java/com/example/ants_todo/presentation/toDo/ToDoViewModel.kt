@@ -27,22 +27,22 @@ class ToDoViewModel(private val listId: Int, private val listName: String) : Bas
     }
 
     fun addItem(item: ToDoModel) = viewModelScope.launch {
-        toDoRepository.insert(item).await()
+        toDoRepository.insertAsync(item).await()
     }
 
     fun deleteItem(id: Int) = viewModelScope.launch {
-        preDeletedToDo = toDoRepository.getById(id).await()
-        toDoRepository.delete(preDeletedToDo!!)
+        preDeletedToDo = toDoRepository.getByIdAsync(id).await()
+        toDoRepository.deleteAsync(preDeletedToDo!!).await()
     }
 
     fun updateItem(id: Int) = viewModelScope.launch {
-        val updatedItem = toDoRepository.getById(id).await()
+        val updatedItem = toDoRepository.getByIdAsync(id).await()
         updatedItem.isChecked = !updatedItem.isChecked
-        toDoRepository.update(updatedItem).await()
+        toDoRepository.updateAsync(updatedItem).await()
     }
 
     fun undoDeleting() = viewModelScope.launch {
-        toDoRepository.insert(preDeletedToDo!!).await()
+        toDoRepository.insertAsync(preDeletedToDo!!).await()
         preDeletedToDo = null
     }
 

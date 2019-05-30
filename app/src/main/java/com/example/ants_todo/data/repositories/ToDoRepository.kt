@@ -12,19 +12,19 @@ class ToDoRepository(private val dao: ToDoDao) {
         dao.getToDos(id)
     }
 
-    fun getById(id: Int) = CoroutineScope(Dispatchers.IO).async {
+    fun getByIdAsync(id: Int) = CoroutineScope(Dispatchers.IO).async {
         dao.getById(id)
     }
 
-    fun insert(list: ToDoModel) = CoroutineScope(Dispatchers.IO).async {
+    fun insertAsync(list: ToDoModel) = CoroutineScope(Dispatchers.IO).async {
         dao.add(list)
     }
 
-    fun delete(list: ToDoModel) = CoroutineScope(Dispatchers.IO).async {
+    fun deleteAsync(list: ToDoModel) = CoroutineScope(Dispatchers.IO).async {
         dao.delete(list)
     }
 
-    fun update(list: ToDoModel) = CoroutineScope(Dispatchers.IO).async {
+    fun updateAsync(list: ToDoModel) = CoroutineScope(Dispatchers.IO).async {
         dao.update(list)
     }
 
