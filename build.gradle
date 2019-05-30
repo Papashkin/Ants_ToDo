@@ -7,12 +7,13 @@ buildscript {
     ext.kodein_version = '6.1.0'
     ext.androidx_version= '1.0.0-beta01'
     ext.coroutines_version='1.2.1'
-    ext.lifecycle_version='2.0.0-beta01'
+    ext.lifecycle_version='2.2.0-alpha01'
+
     repositories {
         google()
         jcenter()
-        
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.1'
         classpath "com.android.databinding:dataBinder:1.0-rc1"
@@ -26,7 +27,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
     }
 }
 
