@@ -7,19 +7,19 @@ import kotlinx.coroutines.withContext
 
 class ListsRepository(private val dao: ListsDao) {
 
-    suspend fun getAllAsync() = withContext(Dispatchers.IO) {
+    suspend fun getAllAsync() = withContext(Dispatchers.Default) {
         dao.getAll()
     }
 
-    suspend fun getListByIdAsync(id: Int) = withContext(Dispatchers.IO) {
+    suspend fun getListByIdAsync(id: Int) = withContext(Dispatchers.Default) {
         dao.getById(id)
     }
 
-    suspend fun insertAsync(list: ListModel) = withContext(Dispatchers.IO) {
+    suspend fun insertAsync(list: ListModel) = withContext(Dispatchers.Default) {
         dao.add(list)
     }
 
-    suspend fun deleteAsync(list: ListModel) = withContext(Dispatchers.IO) {
+    suspend fun deleteAsync(list: ListModel) = withContext(Dispatchers.Default) {
         dao.delete(list)
     }
 

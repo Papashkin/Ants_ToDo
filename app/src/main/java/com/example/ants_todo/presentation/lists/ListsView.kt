@@ -65,10 +65,7 @@ class ListsView : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setAdapter()
         setListeners()
-
-        viewModel.listModel.observe(this, Observer {
-            listsAdapter.submitList(it)
-        })
+        setObservers()
     }
 
     private fun setAdapter() {
@@ -92,6 +89,12 @@ class ListsView : BaseFragment() {
             }
             true
         }
+    }
+
+    private fun setObservers() {
+        viewModel.listModel.observe(this, Observer {
+            listsAdapter.submitList(it)
+        })
     }
 
     private fun checkNewListName(name: String) {
