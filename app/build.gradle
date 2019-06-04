@@ -23,6 +23,13 @@ android {
     dataBinding {
         enabled true
     }
+    lintOptions {
+        ignoreTestSources true
+    }
+}
+
+kapt {
+    useBuildCache = true
 }
 
 dependencies {
