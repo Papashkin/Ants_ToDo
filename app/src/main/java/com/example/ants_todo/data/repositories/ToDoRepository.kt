@@ -16,6 +16,10 @@ class ToDoRepository(private val dao: ToDoDao) {
         dao.getById(id)
     }
 
+    fun getByNameAsync(name: String) = CoroutineScope(Dispatchers.IO).async {
+        dao.getByName(name)
+    }
+
     fun insertAsync(list: ToDoModel) = CoroutineScope(Dispatchers.IO).async {
         dao.add(list)
     }

@@ -16,6 +16,7 @@ import com.example.ants_todo.data.models.ListModel
 import com.example.ants_todo.presentation.common.fragment.BaseFragment
 import com.example.ants_todo.presentation.lists.adapter.ListsAdapter
 import com.example.ants_todo.presentation.lists.adapter.ListsSwipeCallback
+import com.example.ants_todo.util.deleteExtraBlanks
 import com.example.ants_todo.util.navigation.Screens
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.add_list_button_motion.*
@@ -80,7 +81,7 @@ class ListsView : BaseFragment() {
         (mlAddNewList as MotionLayout).setTransitionListener(transitionListener)
 
         ibAddItem.setOnClickListener {
-            val newName = etNewList.text.toString()
+            val newName = etNewList.text.toString().deleteExtraBlanks()
             checkNewListName(newName)
         }
 

@@ -1,6 +1,7 @@
 package com.example.ants_todo.presentation.toDo
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.ants_todo.data.models.ToDoModel
@@ -19,15 +20,21 @@ class ToDoViewModel(private val listId: Int, private val listName: String) : Bas
     private val toDoRepository: ToDoRepository by instance()
     private var preDeletedToDo: ToDoModel? = null
 
+    val isExisted: MutableLiveData<Boolean>
     val toDos: LiveData<List<ToDoModel>>
     init {
         toDos = liveData {
             emitSource(toDoRepository.getToDosAsync(listId).await())
         }
+        isExisted = MutableLiveData(false)
     }
 
     fun addItem(item: ToDoModel) = viewModelScope.launch {
-        toDoRepository.insertAsync(item).await()
+        val existedOne = toDoRepository.getByNameAsync(item.name).await()
+        isExisted.postValue(existedOne != null)
+        if (existedOne == null) {
+            toDoRepository.insertAsync(item).await()
+        }
     }
 
     fun deleteItem(id: Int) = viewModelScope.launch {
