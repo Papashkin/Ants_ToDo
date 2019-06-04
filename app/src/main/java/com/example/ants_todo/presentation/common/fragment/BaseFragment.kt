@@ -6,9 +6,7 @@ import androidx.fragment.app.Fragment
 import com.example.ants_todo.presentation.ToDoApplication
 import com.pawegio.kandroid.inputMethodManager
 import com.pawegio.kandroid.toast
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.erased.instance
@@ -19,14 +17,16 @@ abstract class BaseFragment(override val kodein: Kodein = ToDoApplication.getKod
     CoroutineScope {
 
     private lateinit var job: Job
+    private lateinit var scope: CoroutineScope
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
+        get() = Dispatchers.Default + job
     val router: Router by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        job = Job()
+        job = SupervisorJob()
+        scope = CoroutineScope(coroutineContext)
     }
 
     fun showToast(text: String) {
@@ -49,6 +49,6 @@ abstract class BaseFragment(override val kodein: Kodein = ToDoApplication.getKod
 
     override fun onDestroy() {
         super.onDestroy()
-        job.cancel()
+        job.cancelChildren()
     }
 }
