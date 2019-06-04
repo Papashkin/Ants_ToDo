@@ -75,7 +75,6 @@ class ToDoView : BaseFragment() {
         ibAddItem.setOnClickListener {
             val itemName = etNewItem.text.toString().deleteExtraBlanks()
             if (itemName.isNotEmpty()) {
-//                etNewItem.text.clear()
                 addItem(itemName)
             } else {
                 showToast(R.string.invalid_data)

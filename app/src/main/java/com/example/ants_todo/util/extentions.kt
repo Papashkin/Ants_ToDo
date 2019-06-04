@@ -1,18 +1,14 @@
 package com.example.ants_todo.util
 
 fun String.deleteExtraBlanks(): String {
+    var wordsAfterModifications = ""
     val words = this.split(" ")
     words.forEach { word ->
         word.replace(" ", "")
     }
-    var wordsAfterModifications = ""
-    words.forEach {
-        if (it.isNotEmpty() && words.last() != it) {
-            wordsAfterModifications += "$it "
-        }
-        if (it.isNotEmpty() && words.last() == it) {
-            wordsAfterModifications += it
-        }
+    val filteredWords = words.filter { it.isNotEmpty() }
+    filteredWords.forEach { word ->
+        wordsAfterModifications += if (filteredWords.last() != word) "$word " else word
     }
     return wordsAfterModifications
 }
