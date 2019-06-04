@@ -13,6 +13,9 @@ interface ListsDao {
     @Query("SELECT * from lists")
     fun getAll(): LiveData<List<ListModel>>
 
+    @Query("Select * from lists where name = :name")
+    suspend fun getByName(name: String): ListModel
+
     @Query("Select * from lists where id = :id")
     suspend fun getById(id: Int): ListModel
 
