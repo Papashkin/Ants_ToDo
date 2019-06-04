@@ -17,7 +17,7 @@ This is a single-activity application based on [MVVM](https://en.wikipedia.org/w
 
 ## Screenshots
 
-![](//vk.com/photo1666795_456239672 "Picture 1 - Screen with list's tytles") { width: 200px; height: 280px }
+![Picture 1 - Screen with list's tytles](https://pp.userapi.com/c853420/v853420993/5fd5e/uVXEWMa71l4.jpg "Picture 1 - Screen with list's tytles") { width: 200px; height: 280px }
 ![](//vk.com/photo1666795_456239673 "Picture 2") { width: 200px; height: 280px }
 ![](//vk.com/photo1666795_456239675 "Picture 3 - All items in selected list") { width: 200px; height: 280px }
 ![](//vk.com/photo1666795_456239676 "Picture 4 - Swipe for deleting") { width: 200px; height: 280px }
