@@ -17,18 +17,6 @@ This is a single-activity application based on [MVVM](https://en.wikipedia.org/w
 
 ## Screenshots
 
-![Picture 1 - Screen with list's tytles](https://pp.userapi.com/c853420/v853420993/5fd5e/uVXEWMa71l4.jpg "Picture 1 - Screen with list's tytles") { width: 200px; height: 280px }
-![](//vk.com/photo1666795_456239673 "Picture 2") { width: 200px; height: 280px }
-![](//vk.com/photo1666795_456239675 "Picture 3 - All items in selected list") { width: 200px; height: 280px }
-![](//vk.com/photo1666795_456239676 "Picture 4 - Swipe for deleting") { width: 200px; height: 280px }
-
-
-![Picture 1 - Screen with list's tytles][image1]
-![Картинка][image2]
-![Picture 3 - All items in selected list][image3]
-![Picture 4 - Swipe for deleting][image4]
-
-[image1]: https://vk.com/photo1666795_456239672
-[image2]: https://vk.com/photo1666795_456239673
-[image3]: https://vk.com/photo1666795_456239675
-[image4]: https://vk.com/photo1666795_456239676
+Picture 1|Picture 2|Picture 3|Picture 4|Picture 5|
+--- | ---- |------|------|------|
+<img src="https://pp.userapi.com/c853420/v853420993/5fd5e/uVXEWMa71l4.jpg" width="320" height="280" />|<img src="https://pp.userapi.com/c849432/v849432993/1a74be/ewdqQAP3rsA.jpg" width="320" height="280" />|<img src="https://pp.userapi.com/c848736/v848736993/1b9178/KMHjJ_wQEoU.jpg" width="320" height="280" />|<img src="https://pp.userapi.com/c851336/v851336993/13ef2c/d4HWAjIpaCg.jpg" width="320" height="280" />|<img src="https://pp.userapi.com/c855228/v855228993/5d441/CZRXElCUCsk.jpg" width="320" height="280" />|
