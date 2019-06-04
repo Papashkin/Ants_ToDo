@@ -22,6 +22,10 @@ Picture 1|Picture 2|Picture 3|Picture 4|Picture 5|
 <img src="https://pp.userapi.com/c853420/v853420993/5fd5e/uVXEWMa71l4.jpg" width="320" height="280" />|<img src="https://pp.userapi.com/c849432/v849432993/1a74be/ewdqQAP3rsA.jpg" width="320" height="280" />|<img src="https://pp.userapi.com/c848736/v848736993/1b9178/KMHjJ_wQEoU.jpg" width="320" height="280" />|<img src="https://pp.userapi.com/c851336/v851336993/13ef2c/d4HWAjIpaCg.jpg" width="320" height="280" />|<img src="https://pp.userapi.com/c855228/v855228993/5d441/CZRXElCUCsk.jpg" width="320" height="280" />|
 
 
+## Authors
+Pavel Antoshkin - _full realization_ - ([Papashkin](https://github.com/Papashkin))
+
+
 ## MIT License
 
 Copyright (c) 2019 [Pavel Antoshkin](https://www.facebook.com/paul.antoshkin)
