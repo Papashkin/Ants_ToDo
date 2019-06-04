@@ -12,6 +12,10 @@ class ListsRepository(private val dao: ListsDao) {
         dao.getAll()
     }
 
+    fun getByNameAsync(name: String) = CoroutineScope(Dispatchers.IO).async {
+        dao.getByName(name)
+    }
+
     fun getListByIdAsync(id: Int) = CoroutineScope(Dispatchers.IO).async {
         dao.getById(id)
     }

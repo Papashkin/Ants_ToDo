@@ -87,7 +87,7 @@ class ListsView : BaseFragment() {
 
         etNewList.setOnKeyListener { _, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                checkNewListName(etNewList.text.toString())
+                checkNewListName(etNewList.text.toString().deleteExtraBlanks())
             }
             true
         }
@@ -96,13 +96,18 @@ class ListsView : BaseFragment() {
     private fun setObservers() {
         viewModel.listModel.observe(this, Observer {
             listsAdapter.submitList(it)
+            etNewList.text.clear()
+            (mlAddNewList as MotionLayout).transitionToStart()
+        })
+        viewModel.isExisted.observe(this, Observer {
+            if (it) {
+                showToast(getString(R.string.lists_existed_name_message))
+            }
         })
     }
 
     private fun checkNewListName(name: String) {
         if (name.isNotEmpty()) {
-            etNewList.text.clear()
-            (mlAddNewList as MotionLayout).transitionToStart()
             addItem(name)
         } else {
             showToast(getString(R.string.invalid_data))
