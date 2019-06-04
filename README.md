@@ -23,7 +23,7 @@ Picture 1|Picture 2|Picture 3|Picture 4|Picture 5|
 
 
 ## Authors
-Pavel Antoshkin - _full realization_ - ([Papashkin](https://github.com/Papashkin))
+Pavel Antoshkin ([Papashkin](https://github.com/Papashkin)) - _full realization_
 
 
 ## MIT License
