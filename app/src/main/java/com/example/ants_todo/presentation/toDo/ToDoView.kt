@@ -12,6 +12,7 @@ import com.example.ants_todo.data.models.ToDoModel
 import com.example.ants_todo.presentation.common.fragment.BaseFragment
 import com.example.ants_todo.presentation.toDo.adapter.ToDoAdapter
 import com.example.ants_todo.presentation.toDo.adapter.ToDoSwipeCallback
+import com.example.ants_todo.util.deleteExtraBlanks
 import com.google.android.material.snackbar.Snackbar
 import com.pawegio.kandroid.runDelayed
 import kotlinx.android.synthetic.main.todo_fragment.*
@@ -72,7 +73,7 @@ class ToDoView : BaseFragment() {
             }
         }
         ibAddItem.setOnClickListener {
-            val itemName = etNewItem.text.toString()
+            val itemName = etNewItem.text.toString().deleteExtraBlanks()
             if (itemName.isNotEmpty()) {
                 etNewItem.text.clear()
                 addItem(itemName)
