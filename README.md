@@ -17,4 +17,7 @@ This is a single-activity application based on [MVVM](https://en.wikipedia.org/w
 
 ## Screenshots
 
-<img src="" width="200" height="200" />
+<img src="https://vk.com/photo1666795_456239672" width="200" height="300" />
+https://vk.com/photo1666795_456239673
+https://vk.com/photo1666795_456239675
+https://vk.com/photo1666795_456239676
