@@ -28,6 +28,7 @@ class ListsView : BaseFragment() {
 
     private lateinit var viewModel: ListsViewModel
 
+    private var snackBar: Snackbar? = null
     private var listsAdapter: ListsAdapter = ListsAdapter(
         onItemClick = {
             router.navigateTo(Screens.ToDosScreen(it))
@@ -121,17 +122,23 @@ class ListsView : BaseFragment() {
     }
 
     private fun showSnackBar(listName: String) {
-        Snackbar
+        snackBar = Snackbar
             .make(listsLayout, getString(R.string.lists_snackbar_message, listName), Snackbar.LENGTH_LONG)
             .setActionTextColor(Color.YELLOW)
             .setAction(getString(R.string.undo)) {
                 viewModel.undoDeleting()
             }
-            .show()
+        snackBar?.show()
     }
 
     override fun onResume() {
         super.onResume()
         (mlAddNewList as MotionLayout).transitionToStart()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        snackBar?.dismiss()
+        listsRecycler?.recycledViewPool?.clear()
     }
 }

@@ -47,8 +47,8 @@ abstract class BaseFragment(override val kodein: Kodein = ToDoApplication.getKod
         inputMethodManager?.hideSoftInputFromWindow(view!!.windowToken, 0)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
         job.cancelChildren()
     }
 }

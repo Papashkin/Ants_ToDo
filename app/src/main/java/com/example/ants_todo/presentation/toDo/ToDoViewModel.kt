@@ -1,9 +1,6 @@
 package com.example.ants_todo.presentation.toDo
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.ants_todo.data.models.ToDoModel
 import com.example.ants_todo.data.repositories.ToDoRepository
 import com.example.ants_todo.presentation.ToDoApplication
@@ -30,9 +27,10 @@ class ToDoViewModel(private val listId: Int, private val listName: String) : Bas
     }
 
     fun addItem(item: ToDoModel) = viewModelScope.launch {
-        val existedOne = toDoRepository.getByNameAsync(item.name).await()
-        isExisted.postValue(existedOne != null)
-        if (existedOne == null) {
+        val existedOne: ToDoModel? = toDoRepository.getByNameAndListIdAsync(item.name, item.listId).await()
+        if (existedOne != null) {
+            isExisted.postValue(true)
+        } else {
             toDoRepository.insertAsync(item).await()
         }
     }
@@ -54,10 +52,7 @@ class ToDoViewModel(private val listId: Int, private val listName: String) : Bas
     }
 
     fun uncheckAll() = viewModelScope.launch {
-        toDos.value?.forEach {
-            it.isChecked = false
-            toDoRepository.updateAsync(it).await()
-        }
+        toDoRepository.updateAllAsync().await()
     }
 
     fun getListName(): String = this.listName

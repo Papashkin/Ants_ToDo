@@ -2,7 +2,9 @@ package com.example.ants_todo.presentation.toDo
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -31,6 +33,7 @@ class ToDoView : BaseFragment() {
     private lateinit var toDoModelFactory: ToDoModelFactory
     private lateinit var menu: PopupMenu
 
+    private var snackBar: Snackbar? = null
     private var listId: Int = -1
     private var listName: String = ""
     private var toDoAdapter = ToDoAdapter(
@@ -129,12 +132,19 @@ class ToDoView : BaseFragment() {
     }
 
     private fun showSnackBar(name: String) {
-        Snackbar
+        snackBar = Snackbar
             .make(toDosLayout, getString(R.string.todo_snackbar_message, name), Snackbar.LENGTH_LONG)
             .setActionTextColor(Color.YELLOW)
             .setAction(getString(R.string.undo)) {
                 viewModel.undoDeleting()
             }
-            .show()
+        snackBar?.show()
     }
+
+    override fun onPause() {
+        super.onPause()
+        snackBar?.dismiss()
+        toDosRecycler?.recycledViewPool?.clear()
+    }
+
 }

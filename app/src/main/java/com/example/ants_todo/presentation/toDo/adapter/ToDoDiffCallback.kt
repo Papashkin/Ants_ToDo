@@ -15,5 +15,7 @@ class ToDoDiffCallback (
     override fun getNewListSize(): Int = newList.size
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-        oldList[oldItemPosition] == newList[newItemPosition]
+        oldList[oldItemPosition].id == newList[newItemPosition].id &&
+                oldList[oldItemPosition].name == newList[newItemPosition].name &&
+                oldList[oldItemPosition].isChecked == newList[newItemPosition].isChecked
 }
