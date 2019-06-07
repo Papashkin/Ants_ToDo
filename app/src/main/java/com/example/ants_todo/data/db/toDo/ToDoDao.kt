@@ -22,8 +22,8 @@ interface ToDoDao {
     @Update
     suspend fun update(list: ToDoModel)
 
-    @Query("Update toDos set isChecked = :isChecked")
-    suspend fun updateAll(isChecked: Boolean)
+    @Query("Update toDos set isChecked = :isChecked where listId = :listId")
+    suspend fun updateAll(listId: Int, isChecked: Boolean)
 
     @Delete
     suspend fun delete(list: ToDoModel)

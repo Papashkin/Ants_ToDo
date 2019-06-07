@@ -32,8 +32,8 @@ class ToDoRepository(private val dao: ToDoDao) {
         dao.update(list)
     }
 
-    fun updateAllAsync() = CoroutineScope(Dispatchers.IO).async {
-        dao.updateAll(false)
+    fun updateAllAsync(listId: Int) = CoroutineScope(Dispatchers.IO).async {
+        dao.updateAll(listId, false)
     }
 
 }

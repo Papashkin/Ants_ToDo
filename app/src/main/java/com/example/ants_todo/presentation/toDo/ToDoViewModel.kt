@@ -52,7 +52,7 @@ class ToDoViewModel(private val listId: Int, private val listName: String) : Bas
     }
 
     fun uncheckAll() = viewModelScope.launch {
-        toDoRepository.updateAllAsync().await()
+        toDoRepository.updateAllAsync(listId).await()
     }
 
     fun getListName(): String = this.listName
