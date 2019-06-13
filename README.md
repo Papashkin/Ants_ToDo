@@ -30,4 +30,4 @@ Pavel Antoshkin ([Papashkin](https://github.com/Papashkin)) - _full realization_
 
 ## License
 
-This project is licensed under the MIT License - see the [licence file](LICENSE.md) for details.
+This project is licensed under the MIT License - see the [license file](LICENSE.md) for details.
