@@ -19,16 +19,15 @@ class ListsViewModel : BaseViewModel() {
     val isExisted: MutableLiveData<Boolean>
     val listModel: LiveData<List<ListModel>>
     init {
-        listModel = liveData {
-            emitSource(listsRepository.getAllAsync().await())
-        }
+        listModel = liveData { emitSource(listsRepository.getAllAsync().await()) }
         isExisted = MutableLiveData(false)
     }
 
-    fun addItem(item: ListModel) = viewModelScope.launch {
-        val existedOne = listsRepository.getByNameAsync(item.name).await()
+    fun addItem(name: String) = viewModelScope.launch {
+        val existedOne = listsRepository.getByNameAsync(name).await()
         isExisted.postValue(existedOne != null)
         if (existedOne == null) {
+            val item = ListModel(name = name)
             listsRepository.insertAsync(item).await()
         }
     }

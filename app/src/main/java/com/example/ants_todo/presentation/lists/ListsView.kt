@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.ants_todo.R
-import com.example.ants_todo.data.models.ListModel
 import com.example.ants_todo.presentation.common.fragment.BaseFragment
 import com.example.ants_todo.presentation.lists.adapter.ListsAdapter
 import com.example.ants_todo.presentation.lists.adapter.ListsSwipeCallback
@@ -19,8 +18,8 @@ import com.example.ants_todo.util.deleteExtraBlanks
 import com.example.ants_todo.util.navigation.Screens
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.add_list_button_motion.*
-import kotlinx.android.synthetic.main.lists_fragment.*
-import kotlinx.android.synthetic.main.lists_fragment.mlAddNewList
+import kotlinx.android.synthetic.main.fragment_lists.*
+import kotlinx.android.synthetic.main.fragment_lists.mlAddNewList
 
 
 class ListsView : BaseFragment() {
@@ -47,9 +46,7 @@ class ListsView : BaseFragment() {
                     etNewList.requestFocus()
                     showKeyboard()
                 }
-                layout?.startState -> {
-                    hideKeyboard()
-                }
+                layout?.startState -> hideKeyboard()
             }
         }
     }
@@ -63,7 +60,7 @@ class ListsView : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.lists_fragment, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_lists, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -96,7 +93,7 @@ class ListsView : BaseFragment() {
     }
 
     private fun setObservers() {
-        viewModel.listModel.observe(this, Observer { listsAdapter.submitList(it) })
+        viewModel.listModel.observe(this, Observer { listsAdapter.update(it) })
         viewModel.isExisted.observe(this, Observer {
             if (it) showToast(getString(R.string.lists_existed_name_message))
         })
@@ -112,7 +109,7 @@ class ListsView : BaseFragment() {
         etNewList.text.clear()
     }
 
-    private fun addItem(name: String) = viewModel.addItem(ListModel(name = name))
+    private fun addItem(name: String) = viewModel.addItem(name)
 
     private fun showSnackBar(listName: String) {
         snackBar = Snackbar
