@@ -14,7 +14,7 @@ class Screens {
     }
 
     class ToDosScreen(private val list: ListModel) : SupportAppScreen() {
-        override fun getFragment(): Fragment = ToDoView().newInstance(list.id, list.name)
+        override fun getFragment(): Fragment = ToDoView.newInstance(list.id, list.name)
         override fun getScreenKey(): String = "toDos view screen"
     }
 }

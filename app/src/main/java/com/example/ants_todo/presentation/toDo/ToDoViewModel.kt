@@ -13,7 +13,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.erased.instance
 
 
-class ToDoViewModel(private val listId: Int, private val listName: String) : BaseViewModel() {
+class ToDoViewModel(private val listId: Int) : BaseViewModel() {
 
     override val kodein: Kodein = ToDoApplication.getKodein()
 
@@ -32,9 +32,7 @@ class ToDoViewModel(private val listId: Int, private val listName: String) : Bas
     fun addItem(item: ToDoModel) = viewModelScope.launch {
         val existedOne = toDoRepository.getByNameAsync(item.name).await()
         isExisted.postValue(existedOne != null)
-        if (existedOne == null) {
-            toDoRepository.insertAsync(item).await()
-        }
+        if (existedOne == null) toDoRepository.insertAsync(item).await()
     }
 
     fun deleteItem(id: Int) = viewModelScope.launch {
@@ -59,6 +57,4 @@ class ToDoViewModel(private val listId: Int, private val listName: String) : Bas
             toDoRepository.updateAsync(it).await()
         }
     }
-
-    fun getListName(): String = this.listName
 }

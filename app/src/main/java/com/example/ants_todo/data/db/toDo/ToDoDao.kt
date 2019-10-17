@@ -11,7 +11,7 @@ interface ToDoDao {
     fun getToDos(listId: Int): LiveData<List<ToDoModel>>
 
     @Query("Select * from toDos where name = :name")
-    suspend fun getByName(name: String): ToDoModel
+    suspend fun getByName(name: String): ToDoModel?
 
     @Query("Select * from toDos where id = :id")
     suspend fun getById(id: Int): ToDoModel

@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ants_todo.R
 import com.example.ants_todo.data.models.ToDoModel
@@ -15,9 +14,6 @@ class ToDoAdapter(
     private val onItemDeleted: (name: String, id: Int) -> Unit
 ) : RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder>() {
 
-    private lateinit var diffCallback: ToDoDiffCallback
-    private lateinit var diffResult: DiffUtil.DiffResult
-
     private var toDoList = arrayListOf<ToDoModel>()
     private val listener = object : ToDoClickListener {
         override fun onClick(id: Int) {
@@ -26,15 +22,10 @@ class ToDoAdapter(
     }
 
     fun setList(items: ArrayList<ToDoModel>) {
-        val sortedItems = items.sortedBy { it.isChecked }
-        diffCallback = ToDoDiffCallback(
-            oldList = toDoList,
-            newList = sortedItems
-        )
-        diffResult = DiffUtil.calculateDiff(diffCallback)
+        val sortedItems = items.sortedBy { it.isChecked }.toList()
         toDoList.clear()
         toDoList.addAll(sortedItems)
-        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     fun deleteItem(position: Int) {
