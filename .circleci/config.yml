@@ -3,9 +3,9 @@ jobs:
   build:
     working_directory: ~/code
     docker:
-      - image: circleci/android:api-28-alpha
+      - image: circleci/android:api-29
     environment:
-      JVM_OPTS: -Xmx2g
+      JVM_OPTS: -Xmx1536m
     steps:
       - checkout
       - restore_cache:
@@ -19,6 +19,9 @@ jobs:
       - run:
           name: Run Tests
           command: ./gradlew lint test
+      - run:
+          name: Build
+          command: ./gradlew assembleRelease
       - store_artifacts:
           path: app/build/reports
           destination: reports

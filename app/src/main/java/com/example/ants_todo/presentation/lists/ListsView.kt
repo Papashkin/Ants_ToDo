@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.constraintlayout.motion.widget.MotionScene
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -42,7 +41,6 @@ class ListsView : BaseFragment() {
         override fun onTransitionChange(layout: MotionLayout?, startId: Int, endId: Int, progress: Float) {}
         override fun onTransitionTrigger(layout: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {}
         override fun onTransitionStarted(layout: MotionLayout?, p1: Int, p2: Int) {}
-        override fun allowsTransition(p0: MotionScene.Transition?): Boolean = true
         override fun onTransitionCompleted(layout: MotionLayout?, currentId: Int) {
             when (currentId) {
                 layout?.endState -> {
@@ -61,8 +59,11 @@ class ListsView : BaseFragment() {
         viewModel = ViewModelProviders.of(this).get(ListsViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.lists_fragment, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.lists_fragment, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -95,31 +96,23 @@ class ListsView : BaseFragment() {
     }
 
     private fun setObservers() {
-        viewModel.listModel.observe(this, Observer {
-            listsAdapter.submitList(it)
-            etNewList.text.clear()
-            (mlAddNewList as MotionLayout).transitionToStart()
-        })
+        viewModel.listModel.observe(this, Observer { listsAdapter.submitList(it) })
         viewModel.isExisted.observe(this, Observer {
-            if (it) {
-                showToast(getString(R.string.lists_existed_name_message))
-            }
+            if (it) showToast(getString(R.string.lists_existed_name_message))
         })
     }
 
     private fun checkNewListName(name: String) {
-        if (name.isNotEmpty()) {
+        if (name.isNotBlank()) {
+            (mlAddNewList as MotionLayout).transitionToStart()
             addItem(name)
         } else {
             showToast(getString(R.string.invalid_data))
         }
+        etNewList.text.clear()
     }
 
-    private fun addItem(name: String) {
-        viewModel.addItem(
-            ListModel(name = name)
-        )
-    }
+    private fun addItem(name: String) = viewModel.addItem(ListModel(name = name))
 
     private fun showSnackBar(listName: String) {
         snackBar = Snackbar

@@ -18,15 +18,14 @@ import com.example.ants_todo.util.deleteExtraBlanks
 import com.google.android.material.snackbar.Snackbar
 import com.pawegio.kandroid.runDelayed
 import kotlinx.android.synthetic.main.todo_fragment.*
+import kotlin.collections.ArrayList
 
 class ToDoView : BaseFragment() {
-    fun newInstance(listId: Int, listName: String): ToDoView {
-        val fragment = ToDoView()
-        val args = Bundle()
-        fragment.listId = listId
-        fragment.listName = listName
-        fragment.arguments = args
-        return fragment
+    companion object {
+        fun newInstance(listId: Int, listName: String) = ToDoView().apply {
+            this.listId = listId
+            this.listName = listName
+        }
     }
 
     private lateinit var viewModel: ToDoViewModel
@@ -48,16 +47,19 @@ class ToDoView : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        toDoModelFactory = ToDoModelFactory(listId, listName)
+        toDoModelFactory = ToDoModelFactory(listId)
         viewModel = ViewModelProviders.of(this, toDoModelFactory).get(ToDoViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.todo_fragment, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.todo_fragment, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tvListName.text = viewModel.getListName().toUpperCase()
+        tvListName.text = this.listName
 
         setListeners()
         setAdapter()
@@ -68,24 +70,17 @@ class ToDoView : BaseFragment() {
         ibToolbarBack.setOnClickListener {
             if (etNewItem.isFocused) {
                 hideKeyboard()
-                runDelayed(300) {
-                    router.exit()
-                }
+                runDelayed(300) { router.exit() }
             } else {
                 router.exit()
             }
         }
         ibAddItem.setOnClickListener {
-            val itemName = etNewItem.text.toString().deleteExtraBlanks()
-            if (itemName.isNotEmpty()) {
-                addItem(itemName)
-            } else {
-                showToast(R.string.invalid_data)
-            }
+            val itemName = etNewItem.text.toString()
+            if (itemName.isNotBlank()) addItem(itemName) else showToast(R.string.invalid_data)
+            etNewItem.text.clear()
         }
-        ibMenu.setOnClickListener {
-            showPopupMenu(it)
-        }
+        ibMenu.setOnClickListener { showPopupMenu(it) }
     }
 
     private fun showPopupMenu(view: View) {
@@ -112,24 +107,19 @@ class ToDoView : BaseFragment() {
         viewModel.toDos.observe(this, Observer {
             toDoAdapter.setList(it as ArrayList<ToDoModel>)
             etNewItem.text.clear()
-            tvToDoCount.text = getString(R.string.todo_counter_text, it.filter { item -> item.isChecked }.size, it.size)
+            tvToDoCount.text = getString(
+                R.string.todo_counter_text,
+                it.filter { item -> item.isChecked }.size,
+                it.size
+            )
         })
         viewModel.isExisted.observe(this, Observer {
-            if (it) {
-                showToast(getString(R.string.todo_existed_name_message))
-            }
+            if (it) showToast(getString(R.string.todo_existed_name_message))
         })
     }
 
-    private fun addItem(name: String) {
-        viewModel.addItem(
-            ToDoModel(
-                name = name,
-                isChecked = false,
-                listId = listId
-            )
-        )
-    }
+    private fun addItem(name: String) =
+        viewModel.addItem(ToDoModel(name = name, isChecked = false, listId = listId))
 
     private fun showSnackBar(name: String) {
         snackBar = Snackbar

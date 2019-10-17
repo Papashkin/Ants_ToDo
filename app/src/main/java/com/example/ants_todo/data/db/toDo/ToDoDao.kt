@@ -13,6 +13,9 @@ interface ToDoDao {
     @Query("Select * from toDos where name = :name and listId = :listId")
     suspend fun getByNameAndListId(name: String, listId: Int): ToDoModel
 
+    @Query("Select * from toDos where name = :name")
+    suspend fun getByName(name: String): ToDoModel?
+
     @Query("Select * from toDos where id = :id")
     suspend fun getById(id: Int): ToDoModel
 

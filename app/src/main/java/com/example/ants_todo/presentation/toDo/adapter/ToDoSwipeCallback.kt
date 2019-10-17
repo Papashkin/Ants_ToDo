@@ -40,10 +40,8 @@ class ToDoSwipeCallback(private val todoAdapter: ToDoAdapter) : ItemTouchHelper.
         val itemView = viewHolder.itemView
         val backgroundCornerOffset = 20     // background is behind the rounded corners of itemView
 
-//        val iconDelete = itemView.context.resources.getDrawable(R.drawable.ic_delete_white_30)
         val iconDelete = ContextCompat.getDrawable(itemView.context, R.drawable.ic_delete_white_30)
 
-//        val bgRed = ColorDrawable(itemView.context.resources.getColor(R.color.color_white))
         val bgRed = ColorDrawable(ContextCompat.getColor(itemView.context, R.color.color_red_700))
 
         val iconMargin = (itemView.height - (iconDelete?.intrinsicHeight ?: 0)) / 5
