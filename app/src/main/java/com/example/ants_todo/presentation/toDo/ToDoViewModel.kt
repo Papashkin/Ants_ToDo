@@ -1,9 +1,6 @@
 package com.example.ants_todo.presentation.toDo
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.ants_todo.data.models.ToDoModel
 import com.example.ants_todo.data.repositories.ToDoRepository
 import com.example.ants_todo.presentation.ToDoApplication
@@ -52,9 +49,6 @@ class ToDoViewModel(private val listId: Int) : BaseViewModel() {
     }
 
     fun uncheckAll() = viewModelScope.launch {
-        toDos.value?.forEach {
-            it.isChecked = false
-            toDoRepository.updateAsync(it).await()
-        }
+        toDoRepository.updateAllAsync(listId).await()
     }
 }

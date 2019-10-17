@@ -10,6 +10,9 @@ interface ToDoDao {
     @Query("SELECT * from toDos where listId = :listId")
     fun getToDos(listId: Int): LiveData<List<ToDoModel>>
 
+    @Query("Select * from toDos where name = :name and listId = :listId")
+    suspend fun getByNameAndListId(name: String, listId: Int): ToDoModel
+
     @Query("Select * from toDos where name = :name")
     suspend fun getByName(name: String): ToDoModel?
 
@@ -21,6 +24,9 @@ interface ToDoDao {
 
     @Update
     suspend fun update(list: ToDoModel)
+
+    @Query("Update toDos set isChecked = :isChecked where listId = :listId")
+    suspend fun updateAll(listId: Int, isChecked: Boolean)
 
     @Delete
     suspend fun delete(list: ToDoModel)

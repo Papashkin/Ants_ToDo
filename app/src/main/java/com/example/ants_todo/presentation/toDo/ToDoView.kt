@@ -2,7 +2,9 @@ package com.example.ants_todo.presentation.toDo
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -12,6 +14,7 @@ import com.example.ants_todo.data.models.ToDoModel
 import com.example.ants_todo.presentation.common.fragment.BaseFragment
 import com.example.ants_todo.presentation.toDo.adapter.ToDoAdapter
 import com.example.ants_todo.presentation.toDo.adapter.ToDoSwipeCallback
+import com.example.ants_todo.util.deleteExtraBlanks
 import com.google.android.material.snackbar.Snackbar
 import com.pawegio.kandroid.runDelayed
 import kotlinx.android.synthetic.main.todo_fragment.*
@@ -29,6 +32,7 @@ class ToDoView : BaseFragment() {
     private lateinit var toDoModelFactory: ToDoModelFactory
     private lateinit var menu: PopupMenu
 
+    private var snackBar: Snackbar? = null
     private var listId: Int = -1
     private var listName: String = ""
     private var toDoAdapter = ToDoAdapter(
@@ -117,9 +121,20 @@ class ToDoView : BaseFragment() {
     private fun addItem(name: String) =
         viewModel.addItem(ToDoModel(name = name, isChecked = false, listId = listId))
 
-    private fun showSnackBar(name: String) = Snackbar
-        .make(toDosLayout, getString(R.string.todo_snackbar_message, name), Snackbar.LENGTH_LONG)
-        .setActionTextColor(Color.YELLOW)
-        .setAction(getString(R.string.undo)) { viewModel.undoDeleting() }
-        .show()
+    private fun showSnackBar(name: String) {
+        snackBar = Snackbar
+            .make(toDosLayout, getString(R.string.todo_snackbar_message, name), Snackbar.LENGTH_LONG)
+            .setActionTextColor(Color.YELLOW)
+            .setAction(getString(R.string.undo)) {
+                viewModel.undoDeleting()
+            }
+        snackBar?.show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        snackBar?.dismiss()
+        toDosRecycler?.recycledViewPool?.clear()
+    }
+
 }

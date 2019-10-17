@@ -15,6 +15,7 @@ import com.example.ants_todo.data.models.ListModel
 import com.example.ants_todo.presentation.common.fragment.BaseFragment
 import com.example.ants_todo.presentation.lists.adapter.ListsAdapter
 import com.example.ants_todo.presentation.lists.adapter.ListsSwipeCallback
+import com.example.ants_todo.util.deleteExtraBlanks
 import com.example.ants_todo.util.navigation.Screens
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.add_list_button_motion.*
@@ -26,6 +27,7 @@ class ListsView : BaseFragment() {
 
     private lateinit var viewModel: ListsViewModel
 
+    private var snackBar: Snackbar? = null
     private var listsAdapter: ListsAdapter = ListsAdapter(
         onItemClick = {
             router.navigateTo(Screens.ToDosScreen(it))
@@ -36,14 +38,7 @@ class ListsView : BaseFragment() {
         }
     )
     private val transitionListener = object : MotionLayout.TransitionListener {
-        override fun onTransitionChange(
-            layout: MotionLayout?,
-            startId: Int,
-            endId: Int,
-            progress: Float
-        ) {
-        }
-
+        override fun onTransitionChange(layout: MotionLayout?, startId: Int, endId: Int, progress: Float) {}
         override fun onTransitionTrigger(layout: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {}
         override fun onTransitionStarted(layout: MotionLayout?, p1: Int, p2: Int) {}
         override fun onTransitionCompleted(layout: MotionLayout?, currentId: Int) {
@@ -68,8 +63,7 @@ class ListsView : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? =
-        inflater.inflate(R.layout.lists_fragment, container, false)
+    ): View? = inflater.inflate(R.layout.lists_fragment, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -89,13 +83,13 @@ class ListsView : BaseFragment() {
         (mlAddNewList as MotionLayout).setTransitionListener(transitionListener)
 
         ibAddItem.setOnClickListener {
-            val newName = etNewList.text.toString()
+            val newName = etNewList.text.toString().deleteExtraBlanks()
             checkNewListName(newName)
         }
 
         etNewList.setOnKeyListener { _, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                checkNewListName(etNewList.text.toString())
+                checkNewListName(etNewList.text.toString().deleteExtraBlanks())
             }
             true
         }
@@ -109,6 +103,16 @@ class ListsView : BaseFragment() {
         if (name.isNotBlank()) {
             etNewList.text.clear()
             (mlAddNewList as MotionLayout).transitionToStart()
+        })
+        viewModel.isExisted.observe(this, Observer {
+            if (it) {
+                showToast(getString(R.string.lists_existed_name_message))
+            }
+        })
+    }
+
+    private fun checkNewListName(name: String) {
+        if (name.isNotEmpty()) {
             addItem(name)
         } else {
             showToast(getString(R.string.invalid_data))
@@ -117,14 +121,24 @@ class ListsView : BaseFragment() {
 
     private fun addItem(name: String) = viewModel.addItem(ListModel(name = name))
 
-    private fun showSnackBar(listName: String) = Snackbar
-        .make(listsLayout, getString(R.string.lists_snackbar_message, listName), Snackbar.LENGTH_LONG)
-        .setActionTextColor(Color.YELLOW)
-        .setAction(getString(R.string.undo)) { viewModel.undoDeleting() }
-        .show()
+    private fun showSnackBar(listName: String) {
+        snackBar = Snackbar
+            .make(listsLayout, getString(R.string.lists_snackbar_message, listName), Snackbar.LENGTH_LONG)
+            .setActionTextColor(Color.YELLOW)
+            .setAction(getString(R.string.undo)) {
+                viewModel.undoDeleting()
+            }
+        snackBar?.show()
+    }
 
     override fun onResume() {
         super.onResume()
         (mlAddNewList as MotionLayout).transitionToStart()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        snackBar?.dismiss()
+        listsRecycler?.recycledViewPool?.clear()
     }
 }

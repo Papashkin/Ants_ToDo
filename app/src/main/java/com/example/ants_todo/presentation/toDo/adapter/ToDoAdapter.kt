@@ -1,7 +1,6 @@
 package com.example.ants_todo.presentation.toDo.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +11,7 @@ import com.example.ants_todo.databinding.TodoListViewBinding
 class ToDoAdapter(
     private val onItemClicked: (id: Int) -> Unit,
     private val onItemDeleted: (name: String, id: Int) -> Unit
-) : RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder>() {
+) : RecyclerView.Adapter<ToDoViewHolder>() {
 
     private var toDoList = arrayListOf<ToDoModel>()
     private val listener = object : ToDoClickListener {
@@ -44,11 +43,5 @@ class ToDoAdapter(
     override fun onBindViewHolder(holder: ToDoViewHolder, position: Int) {
         holder.getBinding().todo = toDoList[position]
         holder.getBinding().listener = listener
-    }
-
-    inner class ToDoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val binding: TodoListViewBinding = DataBindingUtil.bind(view)!!
-
-        fun getBinding(): TodoListViewBinding = binding
     }
 }

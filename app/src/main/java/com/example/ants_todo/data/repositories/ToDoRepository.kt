@@ -16,8 +16,8 @@ class ToDoRepository(private val dao: ToDoDao) {
         dao.getById(id)
     }
 
-    fun getByNameAsync(name: String) = CoroutineScope(Dispatchers.IO).async {
-        dao.getByName(name)
+    fun getByNameAndListIdAsync(name: String, listId: Int) = CoroutineScope(Dispatchers.IO).async {
+        dao.getByNameAndListId(name, listId)
     }
 
     fun insertAsync(list: ToDoModel) = CoroutineScope(Dispatchers.IO).async {
@@ -30,6 +30,10 @@ class ToDoRepository(private val dao: ToDoDao) {
 
     fun updateAsync(list: ToDoModel) = CoroutineScope(Dispatchers.IO).async {
         dao.update(list)
+    }
+
+    fun updateAllAsync(listId: Int) = CoroutineScope(Dispatchers.IO).async {
+        dao.updateAll(listId, false)
     }
 
 }
