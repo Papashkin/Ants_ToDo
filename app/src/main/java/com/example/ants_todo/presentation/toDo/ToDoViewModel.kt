@@ -2,7 +2,7 @@ package com.example.ants_todo.presentation.toDo
 
 import androidx.lifecycle.*
 import com.example.ants_todo.data.models.ToDoModel
-import com.example.ants_todo.data.repositories.ToDoRepository
+import com.example.ants_todo.data.db.toDo.ToDoRepository
 import com.example.ants_todo.presentation.ToDoApplication
 import com.example.ants_todo.presentation.common.fragment.BaseViewModel
 import kotlinx.coroutines.launch
