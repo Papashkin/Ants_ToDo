@@ -20,7 +20,7 @@ interface ListsDao {
     suspend fun getById(id: Int): ListModel
 
     @Insert
-    suspend fun add(list: ListModel)
+    suspend fun insert(list: ListModel)
 
     @Delete
     suspend fun delete(list: ListModel)
