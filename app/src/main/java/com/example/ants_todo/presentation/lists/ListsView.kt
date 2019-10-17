@@ -97,26 +97,19 @@ class ListsView : BaseFragment() {
 
     private fun setObservers() {
         viewModel.listModel.observe(this, Observer { listsAdapter.submitList(it) })
+        viewModel.isExisted.observe(this, Observer {
+            if (it) showToast(getString(R.string.lists_existed_name_message))
+        })
     }
 
     private fun checkNewListName(name: String) {
         if (name.isNotBlank()) {
-            etNewList.text.clear()
             (mlAddNewList as MotionLayout).transitionToStart()
-        })
-        viewModel.isExisted.observe(this, Observer {
-            if (it) {
-                showToast(getString(R.string.lists_existed_name_message))
-            }
-        })
-    }
-
-    private fun checkNewListName(name: String) {
-        if (name.isNotEmpty()) {
             addItem(name)
         } else {
             showToast(getString(R.string.invalid_data))
         }
+        etNewList.text.clear()
     }
 
     private fun addItem(name: String) = viewModel.addItem(ListModel(name = name))
