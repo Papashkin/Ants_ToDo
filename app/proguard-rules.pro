@@ -6,9 +6,6 @@
 ### Android Architecture Components
 # Ref: https://issuetracker.google.com/issues/62113696
 # LifecycleObserver's empty constructor is considered to be unused by proguard
-#-keepclassmembers class * implements android.arch.lifecycle.LifecycleObserver {
-#    <init>(...);
-#}
 -keep class * implements android.arch.lifecycle.LifecycleObserver {
     <init>(...);
 }

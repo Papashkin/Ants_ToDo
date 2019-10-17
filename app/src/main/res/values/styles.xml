@@ -10,7 +10,7 @@
 
     <style name="ListsStyle" >
         <item name="android:textColor">@color/colorPrimaryText</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
         <item name="android:textAlignment">viewStart</item>
         <item name="android:layout_margin">10dp</item>
         <item name="android:padding">6dp</item>
@@ -19,7 +19,7 @@
 
     <style name="ToDosStyle" >
         <item name="android:textColor">@color/colorPrimaryText</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
         <item name="android:textAlignment">viewStart</item>
         <item name="android:layout_margin">10dp</item>
         <item name="android:padding">2dp</item>

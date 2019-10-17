@@ -2,6 +2,7 @@ package com.example.ants_todo.presentation.toDo
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +11,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.ants_todo.R
-import com.example.ants_todo.data.models.ToDoModel
 import com.example.ants_todo.presentation.common.fragment.BaseFragment
 import com.example.ants_todo.presentation.toDo.adapter.ToDoAdapter
 import com.example.ants_todo.presentation.toDo.adapter.ToDoSwipeCallback
-import com.example.ants_todo.util.deleteExtraBlanks
 import com.google.android.material.snackbar.Snackbar
 import com.pawegio.kandroid.runDelayed
-import kotlinx.android.synthetic.main.todo_fragment.*
-import kotlin.collections.ArrayList
+import kotlinx.android.synthetic.main.fragment_todo.*
+
 
 class ToDoView : BaseFragment() {
     companion object {
@@ -55,7 +54,7 @@ class ToDoView : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.todo_fragment, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_todo, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,6 +63,18 @@ class ToDoView : BaseFragment() {
         setListeners()
         setAdapter()
         setObservers()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        snackBar?.dismiss()
+        toDosRecycler?.recycledViewPool?.clear()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        snackBar?.dismiss()
+        toDosRecycler?.recycledViewPool?.clear()
     }
 
     private fun setListeners() {
@@ -75,12 +86,18 @@ class ToDoView : BaseFragment() {
                 router.exit()
             }
         }
-        ibAddItem.setOnClickListener {
-            val itemName = etNewItem.text.toString()
-            if (itemName.isNotBlank()) addItem(itemName) else showToast(R.string.invalid_data)
-            etNewItem.text.clear()
+        ibAddItem.setOnClickListener { checkInsertedText() }
+        etNewItem.setOnKeyListener { _, keyCode, _ ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER) checkInsertedText()
+            true
         }
         ibMenu.setOnClickListener { showPopupMenu(it) }
+    }
+
+    private fun checkInsertedText() {
+        val itemName = etNewItem.text.toString()
+        if (itemName.isNotBlank()) addItem(itemName) else showToast(R.string.invalid_data)
+        etNewItem.text.clear()
     }
 
     private fun showPopupMenu(view: View) {
@@ -90,9 +107,7 @@ class ToDoView : BaseFragment() {
             viewModel.uncheckAll()
             true
         }
-        menu.setOnDismissListener {
-            it.dismiss()
-        }
+        menu.setOnDismissListener { it.dismiss() }
         menu.show()
     }
 
@@ -104,13 +119,12 @@ class ToDoView : BaseFragment() {
     }
 
     private fun setObservers() {
-        viewModel.toDos.observe(this, Observer {
-            toDoAdapter.setList(it as ArrayList<ToDoModel>)
-            etNewItem.text.clear()
+        viewModel.toDos.observe(this, Observer { items ->
+            toDoAdapter.update(items.sortedBy { it.isChecked })
             tvToDoCount.text = getString(
                 R.string.todo_counter_text,
-                it.filter { item -> item.isChecked }.size,
-                it.size
+                items.filter { item -> item.isChecked }.size,
+                items.size
             )
         })
         viewModel.isExisted.observe(this, Observer {
@@ -118,8 +132,7 @@ class ToDoView : BaseFragment() {
         })
     }
 
-    private fun addItem(name: String) =
-        viewModel.addItem(ToDoModel(name = name, isChecked = false, listId = listId))
+    private fun addItem(name: String) = viewModel.addItem(name)
 
     private fun showSnackBar(name: String) {
         snackBar = Snackbar
@@ -130,11 +143,4 @@ class ToDoView : BaseFragment() {
             }
         snackBar?.show()
     }
-
-    override fun onPause() {
-        super.onPause()
-        snackBar?.dismiss()
-        toDosRecycler?.recycledViewPool?.clear()
-    }
-
 }

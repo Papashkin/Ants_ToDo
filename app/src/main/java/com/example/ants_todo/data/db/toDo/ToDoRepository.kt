@@ -1,6 +1,5 @@
 package com.example.ants_todo.data.db.toDo
 
-import com.example.ants_todo.data.db.toDo.ToDoDao
 import com.example.ants_todo.data.models.ToDoModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,5 +21,4 @@ class ToDoRepository(private val dao: ToDoDao) {
     fun updateAsync(list: ToDoModel) = scope.async { dao.update(list) }
 
     fun updateAllAsync(listId: Int) = scope.async { dao.updateAll(listId, false) }
-
 }

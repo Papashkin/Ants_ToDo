@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ant\'s списки</string>
+
+    <!-- ====== COMMON ====== -->
+    <string name="Ok">Ок</string>
+    <string name="Cancel">Отмена</string>
+    <string name="undo">НАЗАД</string>
+    <string name="invalid_data">Неверные данные</string>
+
+    <!-- ====== LIST ====== -->
+    <string name="lists_add_new_list">Новый список</string>
+    <string name="lists_existed_name_message">Такое название уже существует</string>
+    <string name="lists_new_list_creation">Создание нового списка</string>
+    <string name="lists_new_list_creation_hint">Пожалуйста, введите название</string>
+    <string name="lists_snackbar_message">Список %1$s был удален</string>
+    <string name="lists_toolbar_title">Списки:</string>
+
+    <!-- ====== TO_DO ====== -->
+    <string name="todo_counter_text">(%1$d/%2$d)</string>
+    <string name="todo_existed_name_message">Такое название уже существует</string>
+    <string name="todo_new_item_hint">введите текст</string>
+    <string name="todo_snackbar_message">Позиция %1$s была удалена</string>
+
+    <!-- ====== TO_DO menu ====== -->
+    <string name="menu_uncheck_all">Снять все отметки</string>
+</resources>

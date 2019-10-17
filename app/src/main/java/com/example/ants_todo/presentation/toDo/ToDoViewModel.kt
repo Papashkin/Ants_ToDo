@@ -20,16 +20,17 @@ class ToDoViewModel(private val listId: Int) : BaseViewModel() {
     val isExisted: MutableLiveData<Boolean>
     val toDos: LiveData<List<ToDoModel>>
     init {
-        toDos = liveData {
-            emitSource(toDoRepository.getToDosAsync(listId).await())
-        }
+        toDos = liveData { emitSource(toDoRepository.getToDosAsync(listId).await()) }
         isExisted = MutableLiveData(false)
     }
 
-    fun addItem(item: ToDoModel) = viewModelScope.launch {
-        val existedOne = toDoRepository.getByNameAsync(item.name).await()
+    fun addItem(name: String) = viewModelScope.launch {
+        val existedOne = toDoRepository.getByNameAsync(name).await()
         isExisted.postValue(existedOne != null)
-        if (existedOne == null) toDoRepository.insertAsync(item).await()
+        if (existedOne == null) {
+            val item = ToDoModel(name = name, isChecked = false, listId = listId)
+            toDoRepository.insertAsync(item).await()
+        }
     }
 
     fun deleteItem(id: Int) = viewModelScope.launch {
